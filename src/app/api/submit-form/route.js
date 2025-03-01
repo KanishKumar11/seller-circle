@@ -113,8 +113,9 @@ export async function POST(req) {
     const newZohoData = {
       ...zohoData,
       Lead_Source: "Website", // Tag the lead source
+      Last_Name: zohoData.Last_Name || "-",
     };
-
+    console.log(newZohoData);
     // 8. Send to Zoho Bigin (Contact creation)
     try {
       const biginResponse = await fetch(
@@ -132,6 +133,7 @@ export async function POST(req) {
       );
 
       const responseText = await biginResponse.text();
+      console.log(responseText);
       let biginData;
       let contactId;
 
