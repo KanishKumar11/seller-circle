@@ -85,8 +85,8 @@ export const PUT = async (req, { params }) => {
     if (file) {
        // Configure Appwrite client
             const client = new Client()
-              .setEndpoint(process.env.ProjectEndPoint) // Appwrite endpoint
-              .setProject(process.env.ProjectID); // Appwrite project ID
+              .setEndpoint(process.env.APPWRITE_PROJECT_API) // Appwrite endpoint
+              .setProject(process.env.APPWRITE_PROJECT_ID); // Appwrite project ID
             
             client.headers = {
               ...client.headers,
@@ -101,7 +101,7 @@ export const PUT = async (req, { params }) => {
               ID.unique(), // Generate unique file ID
               file
             );
-            const fileUrl = `${process.env.ProjectEndPoint}/storage/buckets/${process.env.Bucket_ID}/files/${response.$id}/view?project=${process.env.ProjectID}`;
+            const fileUrl = `${process.env.APPWRITE_PROJECT_API}/storage/buckets/${process.env.Bucket_ID}/files/${response.$id}/view?project=${process.env.APPWRITE_PROJECT_ID}`;
       
       
       updatedFields.filename = file.name;

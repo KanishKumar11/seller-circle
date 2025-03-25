@@ -53,8 +53,8 @@ export const POST = async (req) => {
 
       // Configure Appwrite client
       const client = new Client()
-        .setEndpoint(process.env.ProjectEndPoint) // Appwrite endpoint
-        .setProject(process.env.ProjectID); // Appwrite project ID
+        .setEndpoint(process.env.APPWRITE_PROJECT_API) // Appwrite endpoint
+        .setProject(process.env.APPWRITE_PROJECT_ID); // Appwrite project ID
       
       client.headers = {
         ...client.headers,
@@ -69,7 +69,7 @@ export const POST = async (req) => {
         ID.unique(), // Generate unique file ID
         file
       );
-      const fileUrl = `${process.env.ProjectEndPoint}/storage/buckets/${process.env.Bucket_ID}/files/${response.$id}/view?project=${process.env.ProjectID}`;
+      const fileUrl = `${process.env.APPWRITE_PROJECT_API}/storage/buckets/${process.env.Bucket_ID}/files/${response.$id}/view?project=${process.env.APPWRITE_PROJECT_ID}`;
 
       const newBlog = new BlogModel({
         title,
