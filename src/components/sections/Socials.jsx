@@ -16,6 +16,7 @@ import {
 } from "react-icons/bi";
 import { AiFillInstagram } from "react-icons/ai";
 import Link from "next/link";
+import Image from "next/image";
 const Socials = () => {
   return (
     <div className="flex gap-7 flex-row mx-auto flex-wrap items-center justify-center max-lg:my-4 z-30 ">
