@@ -7,8 +7,6 @@ import {
   FaLinkedin,
   FaPinterest,
 } from "react-icons/fa6";
-import { Pinterest } from "grommet-icons";
-import Image from "next/image";
 import { BsInstagram } from "react-icons/bs";
 import { RiFacebookBoxLine, RiInstagramFill } from "react-icons/ri";
 import {
