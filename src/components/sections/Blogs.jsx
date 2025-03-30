@@ -107,7 +107,7 @@ const Blogs = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <BlogCardListSkeleton />
+        Loading Blogs...
         </div>
     );
   }

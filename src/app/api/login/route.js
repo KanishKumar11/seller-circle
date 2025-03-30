@@ -218,7 +218,10 @@ async function createSuperAdmin() {
 
 export const POST = async (req) => {
   try {
+    console.log("in function")
     await connectDB();
+ 
+    
     // await createSuperAdmin(); // Ensure super admin is created
 
     const { email, password } = await req.json();
@@ -226,6 +229,7 @@ export const POST = async (req) => {
     // User Login
     const getData = await authModels.findOne({ email });
     if (!getData) {
+      console.log("Didn't get data")
       return NextResponse.json(
         { error: "Invalid credentials" },
         { status: 401 }
@@ -235,8 +239,10 @@ export const POST = async (req) => {
     // Check the hashed password for user
     const isPasswordValid = await bcrypt.compare(password, getData.password);
     if (!isPasswordValid) {
+      console.log("Pass not valid!")
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
+    console.log("Pass  valid!")
 
     const token = createToken(getData);
     getData.token = token;
@@ -246,6 +252,7 @@ export const POST = async (req) => {
       { success: true, data: getData },
       { status: 200 }
     );
+    console.log(response, "api res.")
 
     response.cookies.set("authToken", token, {
       httpOnly: true,
