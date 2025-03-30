@@ -125,7 +125,7 @@ const Blogs = () => {
 
       <div className="flex flex-row flex-wrap gap-3">
         {/* Map through blogsData from Redux store */}
-        {blogsData.slice(0, 4).map((blog, index) => (
+        {blogsData.slice(0, 3).map((blog, index) => (
           <div className="lg:max-w-[32%] w-full" key={index}>
             <BlogCard
               imgUrl={blog?.imageBase64}
