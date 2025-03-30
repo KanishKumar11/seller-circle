@@ -12,7 +12,8 @@ import {
 } from "@mui/material";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useRouter } from "next/navigation";
-
+import { motion } from "framer-motion";
+  
 const LatestBlog = ({ blog }) => {
   const [isLoading, setIsLoading] = useState(false); // Loading state
   let latestB = blog[0];
@@ -48,12 +49,29 @@ const LatestBlog = ({ blog }) => {
 
   return (
     <div className="p-4 md:px-[20px] flex flex-col items-center max-w-[1440px] mx-auto">
-      <div className="py-12 text-center">
-        <h2 className="text-4xl md:text-6xl font-bold mb-2">Latest Blog</h2>
-        <p className="mb-4 text-lg md:text-xl">
-          Stay updated with our latest insights and articles.
-        </p>
-      </div>
+
+       <div className="max-w-7xl mx-auto mb-16 z-[39]">
+              <motion.h3
+                initial={{ y: 100, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 100 }}
+                viewport={{ once: true }}
+                className="font-[900] text-2xl lg:text-4xl text-[#039BE4] text-center max-w-4xl uppercase mx-auto"
+              >
+                LATEST BLOGS
+              </motion.h3>
+              <motion.h2
+                initial={{ y: 100, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 100 }}
+                viewport={{ once: true }}
+                className="nunito font-extrabold text-2xl lg:text-5xl max-w-5xl mx-auto text-center my-7 uppercase text-wrap"
+              >
+                Stay updated with our latest{" "}
+                <span className="text-[#039BE4]">insights and articles.  </span>
+              </motion.h2>
+            </div>
+
+
+ 
       <div className="flex flex-col md:flex-row bg-white overflow-hidden w-full">
         <div className="md:w-2/5  rounded-[20px] border border-gray-400 shadow-2xl md:h-[370px]">
 
@@ -84,6 +102,8 @@ const LatestBlog = ({ blog }) => {
                   `data:${latestB?.authID?.filename};base64,${latestB?.authID?.imageBase64}` ||
                   ""
                 }
+                // src={authdata?.imageBase64}
+
                 style={{
                   width: 90,
                   height: 90,
