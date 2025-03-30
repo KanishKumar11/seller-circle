@@ -222,7 +222,7 @@ export const POST = async (req) => {
     await connectDB();
  
     
-    // await createSuperAdmin(); // Ensure super admin is created
+    await createSuperAdmin(); // Ensure super admin is created
 
     const { email, password } = await req.json();
 
