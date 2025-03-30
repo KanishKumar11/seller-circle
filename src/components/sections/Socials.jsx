@@ -7,8 +7,6 @@ import {
   FaLinkedin,
   FaPinterest,
 } from "react-icons/fa6";
-import { Pinterest } from "grommet-icons";
-import Image from "next/image";
 import { BsInstagram } from "react-icons/bs";
 import { RiFacebookBoxLine, RiInstagramFill } from "react-icons/ri";
 import {
@@ -18,6 +16,7 @@ import {
 } from "react-icons/bi";
 import { AiFillInstagram } from "react-icons/ai";
 import Link from "next/link";
+import Image from "next/image";
 const Socials = () => {
   return (
     <div className="flex gap-7 flex-row mx-auto flex-wrap items-center justify-center max-lg:my-4 z-30 ">
