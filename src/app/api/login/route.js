@@ -216,20 +216,71 @@ async function createSuperAdmin() {
   }
 }
 
-export const POST = async (req) => {
-  try {
-    console.log("in function")
-    await connectDB();
+// export const POST = async (req) => {
+//   try {
+//     console.log("in function")
+//     await connectDB();
  
     
-    await createSuperAdmin(); // Ensure super admin is created
+//     // await createSuperAdmin(); // Ensure super admin is created
 
+//     const { email, password } = await req.json();
+
+//     // User Login
+//     const getData = await authModels.findOne({ email });
+//     if (!getData) {
+//       console.log("Didn't get data")
+//       return NextResponse.json(
+//         { error: "Invalid credentials" },
+//         { status: 401 }
+//       );
+//     }
+
+//     // Check the hashed password for user
+//     const isPasswordValid = await bcrypt.compare(password, getData.password);
+//     if (!isPasswordValid) {
+//       console.log("Pass not valid!")
+//       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+//     }
+//     console.log("Pass  valid!")
+
+//     const token = createToken(getData);
+//     getData.token = token;
+//     await getData.save();
+
+//     const response = NextResponse.json(
+//       console.log("in response"),
+//       { success: true, data: getData },
+//       { status: 200 }
+//     );
+//     console.log(response, "api res.")
+
+//     response.cookies.set("authToken", token, {
+//       httpOnly: true,
+//       secure: true, // Ensure HTTPS
+//       sameSite: "strict",
+//       maxAge: 60 * 60 * 24, // 1 day
+//       path: "/",
+//     });
+
+//     return response;
+//   } catch (error) {
+//     return NextResponse.json({ error: error.message }, { status: 500 });
+//   }
+// };
+
+
+export const POST = async (req) => {
+  try {
+    console.log("in function");
+    await connectDB();
+ 
     const { email, password } = await req.json();
 
     // User Login
     const getData = await authModels.findOne({ email });
     if (!getData) {
-      console.log("Didn't get data")
+      console.log("Didn't get data");
       return NextResponse.json(
         { error: "Invalid credentials" },
         { status: 401 }
@@ -239,20 +290,23 @@ export const POST = async (req) => {
     // Check the hashed password for user
     const isPasswordValid = await bcrypt.compare(password, getData.password);
     if (!isPasswordValid) {
-      console.log("Pass not valid!")
+      console.log("Pass not valid!");
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
-    console.log("Pass  valid!")
+    console.log("Pass valid!");
 
     const token = createToken(getData);
     getData.token = token;
     await getData.save();
 
+    // Convert getData to a plain object to avoid Mongoose issues
+    const getDataPlain = getData.toObject ? getData.toObject() : getData;
+
     const response = NextResponse.json(
-      { success: true, data: getData },
+      { success: true, data: getDataPlain },
       { status: 200 }
     );
-    console.log(response, "api res.")
+    console.log(response, "api res.");
 
     response.cookies.set("authToken", token, {
       httpOnly: true,
@@ -267,3 +321,4 @@ export const POST = async (req) => {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };
+
