@@ -10,10 +10,11 @@ const RelatedBlogs = ({ category, blogs, currentBlogId }) => {
     return null; // Don’t render if no related blogs
   }
 
+  const finalFilterBlog=filteredBlogs?.slice(0,3)
   return (
-    <div className="space-y-4">
-      <div className="space-y-3">
-        {filteredBlogs.map((blog) => (
+    <div className="space-y-5">
+      <div className="space-y-5 ">
+        {finalFilterBlog.map((blog) => (
           <RelatedBlogCard key={blog._id} post={blog} />
         ))}
       </div>
