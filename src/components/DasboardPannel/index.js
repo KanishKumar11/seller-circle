@@ -719,7 +719,7 @@ const PageAdminDashboard = () => {
                 ))}
           </motion.div>
         </motion.div> */}
-         <div className="min-h-screen py-8 bg-gradient-to-b from-gray-50 to-gray-100">
+         <div className="py-8 bg-gradient-to-b from-gray-50 to-gray-100">
               {/* Blog Cards Grid */}
               <div className="px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto">

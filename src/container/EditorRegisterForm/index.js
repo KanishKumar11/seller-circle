@@ -264,7 +264,8 @@ import {
   UpdateEditorAction,
 } from "@/store/slices/EditorSlice";
 import { useRouter, useSearchParams } from "next/navigation";
-
+import Image from "next/image";
+import registerImage from "../../../public/images/register.jpg"
 export default function AddUserForm({ onSubmit }) {
   const [imagePreview, setImagePreview] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -398,14 +399,9 @@ export default function AddUserForm({ onSubmit }) {
   return (
     <div className="bg-gray-50 min-h-screen">
       <Grid container className="h-full">
-        <Grid item xs={12} md={5} className="bg-gray-900 p-8">
-          <div className="h-full flex flex-col justify-center max-w-md mx-auto ">
-            <Typography variant="h4" className="font-bold mb-6">
-              Editor Management
-            </Typography>
-            <Typography variant="h4" className=" mb-6">
-Can Add, Edit, Delete Blogs.
-            </Typography>
+        <Grid item xs={12} md={5} className="bg-gray-900 h-[100vh]">
+          <div className="h-full flex flex-col justify-center ">
+           <Image alt="image" className="w-[100%] h-[100%] object-cover" src={registerImage}/>
           </div>
         </Grid>
         <Grid item xs={12} md={7} className="p-8">

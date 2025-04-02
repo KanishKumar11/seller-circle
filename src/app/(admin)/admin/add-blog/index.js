@@ -190,8 +190,13 @@ export default function AddBlogIndex() {
             setValue("slug", editorData.slug)
             setValue("category", editorData.category)
             setFetchedContent(editorData.content) // Store content separately
+            // setBlogType(
+            //   editorData.blogType
+            //     ? editorData.blogType.charAt(0).toUpperCase() + editorData.blogType.slice(1)
+            //     : "Simple"
+            // )
             // Handle image preview
-            const base64String = `data:${editorData.contentType};base64,${editorData.imageBase64}`
+            const base64String =editorData?.imageBase64
             setImagePreview(base64String)
           }
         })
@@ -199,7 +204,7 @@ export default function AddBlogIndex() {
           console.error("Error fetching blog data:", error)
         })
     }
-  }, [editId, dispatch, setValue])
+  }, [editId, dispatch, setValue,blogType])
 
   useEffect(() => {
     if (editor && fetchedContent) {
@@ -365,7 +370,6 @@ const insertYoutubeVideo = () => {
   const openYoutubeDialog = () => {
     setYoutubeDialogOpen(true)
   }
-
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Card elevation={3}>
@@ -443,12 +447,15 @@ const insertYoutubeVideo = () => {
 
             <TextField
               fullWidth
+               id="outlined"
               label="Title"
               name="title"
               {...register("title", { required: true })}
               required
               sx={{ mb: 3 }}
+              
               variant="outlined"
+              InputLabelProps={{ shrink: true }}
             />
 
             <Typography variant="h6" gutterBottom>
@@ -682,9 +689,9 @@ const insertYoutubeVideo = () => {
               }}
             >
               <FormControl fullWidth>
-                <InputLabel id="blog-type-label">Blog Type</InputLabel>
+                <InputLabel  id="blogType">Blog Type</InputLabel>
                 <MuiSelect
-                  labelId="blog-type-label"
+                  labelId="blogType"
                   label="Blog Type"
                   value={blogType}
                   onChange={(e) => setBlogType(e.target.value)}

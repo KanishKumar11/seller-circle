@@ -9,6 +9,7 @@ export const POST = async (req) => {
   try {
     await connectDB();
 
+   
     const authHeader = req.headers.get("authorization");
     const token = authHeader?.split(" ")[1];
     // console.log(token);
@@ -39,6 +40,9 @@ export const POST = async (req) => {
     const password = data.get("password");
     const authType = data.get("authType");
     const file = data.get("file");
+
+   
+    
     // const {authType , name ,email, password , file}= req.body
     // if (authType !== "admin") {
     //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -71,7 +75,7 @@ export const POST = async (req) => {
       file
     );
     const fileUrl = `${process.env.APPWRITE_PROJECT_API}/storage/buckets/${process.env.Bucket_ID}/files/${response.$id}/view?project=${process.env.APPWRITE_PROJECT_ID}`;
-
+let hashedPassword=await bcrypt.hash(password,10);
 
 
     const authOption = new authModels({
@@ -86,7 +90,10 @@ export const POST = async (req) => {
 
     await authOption.save();
 
-    return NextResponse.json(authOption, { status: 201 });
+    const user = await authModels.findOne({ email }).select("-password");
+
+
+    return NextResponse.json(user, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -121,7 +128,7 @@ export const GET = async (req) => {
 
     const admin = await authModels
       .find({ authType: "editor" })
-      .select("-token"); // Exclude passwords
+      .select("-token -password"); // Exclude passwords
     return NextResponse.json(admin, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

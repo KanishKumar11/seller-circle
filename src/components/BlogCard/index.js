@@ -326,6 +326,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import renderBlogContent from "@/utils/htmlToContentConvertor";
 import { Nunito_Sans } from "next/font/google"; // Import Nunito Sans font
+import SpinnerLoader from "@/common/Loader";
 
 // Apply Nunito Sans font
 const nunito = Nunito_Sans({
@@ -478,7 +479,10 @@ const BlogCard = ({ imgUrl, category, title, content, blog, blogData }) => {
               zIndex: 10,
             }}
           >
-            <CircularProgress size={40} color="primary" />
+            {/* <CircularProgress size={40} color="primary" /> */}
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <SpinnerLoader />
+    </div>
           </Box>
         )}
 
