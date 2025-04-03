@@ -495,7 +495,7 @@ const BlogCard = ({ imgUrl, category, title, content, blog, blogData }) => {
             <img
               src={imageUrl}
               alt={data?.title || "Blog cover"}
-              className="transition-transform duration-400 ease-in-out object-cover w-full h-full"
+              className="transition-transform duration-400 ease-in-out    w-[100%] h-[100%]"
             />
             <ImageOverlay className="image-overlay">
               <Typography

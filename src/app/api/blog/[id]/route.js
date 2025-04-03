@@ -69,7 +69,8 @@ export const PUT = async (req, { params }) => {
     const file = data.get("file");
     const category = data.get("category");
     const blogType = data.get("blogType");
-    const position = data.get("FormPosition");
+    // const position = data.get("FormPosition");
+    const position = data.get("position");
 
     
     const updatedFields = {};

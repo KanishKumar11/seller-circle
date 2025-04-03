@@ -341,6 +341,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "next/navigation";
 import { useSnackbar } from "notistack";
 import { deleteBlogById, getMyBlogsAction } from "@/store/slices/BlogSlice";
+import ConfirmationModal from "../confirmationmadal";
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:hover": {
     backgroundColor: theme.palette.action.hover,
@@ -355,6 +356,8 @@ export default function BlogManagementTable({
 }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [blogToDelete, setBlogToDelete] = useState(null);
   const rowsPerPage = 10;
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
@@ -398,23 +401,62 @@ export default function BlogManagementTable({
     router.push(`/admin/add-blog?${params.toString()}`, { scroll: false });
   };
 
+  // const handleDelete = (blogId) => {
+  //   const params = new URLSearchParams(window.location.search);
+  //   params.set("deleteblogId", blogId); // Set deleteblogId
+  //   params.delete("editblogId"); // Ensure editblogId is removed
+  //   router.push(`?${params.toString()}`, { scroll: false });
+  //   dispatch(deleteBlogById(blogId))
+  //     .unwrap()
+  //     .then((res) => {
+  //       if (res) {
+  //         params.delete("deleteblogId");
+  //         enqueueSnackbar("blog delete sucessfuly", { variant: "success" });
+  //         dispatch(getMyBlogsAction());
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log("couldnt delete blog", error);
+  //       enqueueSnackbar(error, { variant: "error" });
+  //     });
+  // };
+  // Function to open delete confirmation modal
   const handleDelete = (blogId) => {
+    setBlogToDelete(blogId);
+    setDeleteModalOpen(true);
+  };
+
+  // Close modal without deleting
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
+    setBlogToDelete(null);
+  };
+
+  // Confirm deletion and process
+  const handleConfirmDelete = () => {
+    if (!blogToDelete) return;
+    
     const params = new URLSearchParams(window.location.search);
-    params.set("deleteblogId", blogId); // Set deleteblogId
-    params.delete("editblogId"); // Ensure editblogId is removed
+    params.set("deleteblogId", blogToDelete);
+    params.delete("editblogId");
     router.push(`?${params.toString()}`, { scroll: false });
-    dispatch(deleteBlogById(blogId))
+    
+    dispatch(deleteBlogById(blogToDelete))
       .unwrap()
       .then((res) => {
         if (res) {
           params.delete("deleteblogId");
-          enqueueSnackbar("blog delete sucessfuly", { variant: "success" });
+          enqueueSnackbar("Blog deleted successfully", { variant: "success" });
           dispatch(getMyBlogsAction());
         }
       })
       .catch((error) => {
-        console.log("couldnt delete blog", error);
+        console.log("couldn't delete blog", error);
         enqueueSnackbar(error, { variant: "error" });
+      })
+      .finally(() => {
+        setDeleteModalOpen(false);
+        setBlogToDelete(null);
       });
   };
   return (
@@ -480,6 +522,15 @@ export default function BlogManagementTable({
               </TableRow>
             </TableHead>
             <TableBody>
+            <ConfirmationModal
+        open={deleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleConfirmDelete}
+        title="Delete Blog"
+        message="Are you sure you want to delete this blog? This action cannot be undone."
+        confirmButtonText="Delete"
+        cancelButtonText="Cancel"
+      />
               {isLoadingBlog && myBlogData?.length === 0
                 ? [...Array(10)].map((_, index) => (
                     <StyledTableRow key={index}>

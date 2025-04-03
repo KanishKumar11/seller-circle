@@ -13,3 +13,4 @@ export { default as AdminAllBlog } from "./AdminAllBlog";
 export { default as RelatedBlogList } from "./BlogCategorityList";
 export { default as RelatedBlogCard } from "./BlogCategoryCard";
 export { default as AdminProfilePage } from "./AdninProfiePage";
+export {default as confirmationModal} from "./confirmationmadal"

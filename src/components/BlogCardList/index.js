@@ -114,7 +114,7 @@ const filterData = useMemo(() => {
         {finalCat&&finalCat?.map((catg)=>{
           return(
             <>
-            <button onClick={(()=>handleCategory(catg.catName))} className="border rounded-full  border-blue-500 px-3 h-[35px]" key={catg._id}>
+            <button onClick={(()=>handleCategory(catg.catName))} className="border rounded-full bg-blue-500 text-white hover:bg-gray-500  border-blue-500 px-3 h-[35px]" key={catg._id}>
             {catg.catName}
             </button>
             </>

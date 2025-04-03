@@ -1,10 +1,7 @@
+"use client";
 
-
-
-"use client"
-
-import { useState, useRef, useEffect } from "react"
-import { useForm, Controller } from "react-hook-form"
+import { useState, useRef, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import {
   Box,
   Button,
@@ -26,31 +23,36 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-} from "@mui/material"
-import { styled } from "@mui/material/styles"
-import CloudUploadIcon from "@mui/icons-material/CloudUpload"
-import PublishIcon from "@mui/icons-material/Publish"
-import FormatBoldIcon from "@mui/icons-material/FormatBold"
-import FormatItalicIcon from "@mui/icons-material/FormatItalic"
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted"
-import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered"
-import FormatQuoteIcon from "@mui/icons-material/FormatQuote"
-import CodeIcon from "@mui/icons-material/Code"
-import TitleIcon from "@mui/icons-material/Title"
-import LinkIcon from "@mui/icons-material/Link"
-import ImageIcon from "@mui/icons-material/Image"
-import YouTubeIcon from "@mui/icons-material/YouTube"
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import PublishIcon from "@mui/icons-material/Publish";
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
+import FormatItalicIcon from "@mui/icons-material/FormatItalic";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
+import CodeIcon from "@mui/icons-material/Code";
+import TitleIcon from "@mui/icons-material/Title";
+import LinkIcon from "@mui/icons-material/Link";
+import ImageIcon from "@mui/icons-material/Image";
+import YouTubeIcon from "@mui/icons-material/YouTube";
 
-import { useEditor, EditorContent } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
-import Heading from "@tiptap/extension-heading"
-import TipTapLink from "@tiptap/extension-link"
-import Image from "@tiptap/extension-image"
-import { useDispatch, useSelector } from "react-redux"
-import { addblog, fetchCategoriesAction, getAllBlogsAction, UpdateBlogAction } from "@/store/slices/BlogSlice"
-import { useSearchParams, useRouter } from "next/navigation"
-import { useSnackbar } from "notistack"
-import Youtube from "@tiptap/extension-youtube"
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Heading from "@tiptap/extension-heading";
+import TipTapLink from "@tiptap/extension-link";
+import Image from "@tiptap/extension-image";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addblog,
+  fetchCategoriesAction,
+  getAllBlogsAction,
+  UpdateBlogAction,
+} from "@/store/slices/BlogSlice";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useSnackbar } from "notistack";
+import Youtube from "@tiptap/extension-youtube";
 
 // Styled components
 const VisuallyHiddenInput = styled("input")`
@@ -63,7 +65,7 @@ const VisuallyHiddenInput = styled("input")`
   left: 0;
   white-space: nowrap;
   width: 1px;
-`
+`;
 
 const ImageUploadBox = styled(Paper)(({ theme }) => ({
   border: `2px dashed ${theme.palette.primary.main}`,
@@ -80,7 +82,7 @@ const ImageUploadBox = styled(Paper)(({ theme }) => ({
   "&:hover": {
     backgroundColor: theme.palette.action.hover,
   },
-}))
+}));
 
 const EditorToolbarButton = styled(IconButton)(({ theme, active }) => ({
   color: active ? theme.palette.primary.main : theme.palette.text.primary,
@@ -90,58 +92,59 @@ const EditorToolbarButton = styled(IconButton)(({ theme, active }) => ({
   "&:hover": {
     backgroundColor: theme.palette.action.hover,
   },
-}))
+}));
 
 // Helper function to handle file to base64
-const toBase64 = file => new Promise((resolve, reject) => {
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = () => resolve(reader.result);
-  reader.onerror = error => reject(error);
-});
+const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
 
 // Extract YouTube ID from URL
-const getYoutubeVideoId = url => {
-  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+const getYoutubeVideoId = (url) => {
+  const regExp =
+    /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
   const match = url.match(regExp);
-  return (match && match[7].length === 11) ? match[7] : false;
-}
+  return match && match[7].length === 11 ? match[7] : false;
+};
 
 export default function AddBlogIndex() {
-  const dispatch = useDispatch()
-  const [imagePreview, setImagePreview] = useState(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [fetchedContent, setFetchedContent] = useState(null)
-  const [blogType, setBlogType] = useState("Simple")
-  const [formPosition, setFormPosition] = useState("Right")
-  const router = useRouter()
-  const { enqueueSnackbar } = useSnackbar()
-  
+  const dispatch = useDispatch();
+  const [imagePreview, setImagePreview] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fetchedContent, setFetchedContent] = useState(null);
+  const [blogType, setBlogType] = useState("Simple");
+  const [formPosition, setFormPosition] = useState("Right");
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
   // Image upload dialog state
-  const [imageUploadOpen, setImageUploadOpen] = useState(false)
-  const [editorImageFile, setEditorImageFile] = useState(null)
-  const [editorImagePreview, setEditorImagePreview] = useState(null)
-  
+  const [imageUploadOpen, setImageUploadOpen] = useState(false);
+  const [editorImageFile, setEditorImageFile] = useState(null);
+  const [editorImagePreview, setEditorImagePreview] = useState(null);
+
   // YouTube embed dialog state
-  const [youtubeDialogOpen, setYoutubeDialogOpen] = useState(false)
-  const [youtubeUrl, setYoutubeUrl] = useState("")
-  
-  const editorImageInputRef = useRef(null)
+  const [youtubeDialogOpen, setYoutubeDialogOpen] = useState(false);
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+
+  const editorImageInputRef = useRef(null);
 
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const result = await dispatch(fetchCategoriesAction()).unwrap()
-        console.log("blogg  Categories loaded from API:", result)
+        const result = await dispatch(fetchCategoriesAction()).unwrap();
+        console.log("blogg  Categories loaded from API:", result);
       } catch (err) {
-        console.error("Failed to load categories:", err)
+        console.error("Failed to load categories:", err);
       }
-    }
-    loadCategories()
-  }, [dispatch])
-  const { categories, status, error } = useSelector((state) => state.blog)
+    };
+    loadCategories();
+  }, [dispatch]);
+  const { categories, status, error } = useSelector((state) => state.blog);
 
- 
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -161,11 +164,11 @@ export default function AddBlogIndex() {
         height: 360,
       }),
     ],
-  })
+  });
 
-  const fileInputRef = useRef(null)
-  const searchParams = useSearchParams()
-  const editId = searchParams.get("editblogId")
+  const fileInputRef = useRef(null);
+  const searchParams = useSearchParams();
+  const editId = searchParams.get("editblogId");
 
   const { control, handleSubmit, watch, setValue, register } = useForm({
     defaultValues: {
@@ -174,44 +177,44 @@ export default function AddBlogIndex() {
       category: "",
       file: "",
     },
-  })
+  });
 
-  const title = watch("title")
-  const selectedCategory = watch("category")
+  const title = watch("title");
+  const selectedCategory = watch("category");
 
   useEffect(() => {
     if (editId) {
       dispatch(getAllBlogsAction())
         .unwrap()
         .then((data) => {
-          const editorData = data.find((blog) => blog._id === editId)
+          const editorData = data.find((blog) => blog._id === editId);
           if (editorData) {
-            setValue("title", editorData.title)
-            setValue("slug", editorData.slug)
-            setValue("category", editorData.category)
-            setFetchedContent(editorData.content) // Store content separately
-            // setBlogType(
-            //   editorData.blogType
-            //     ? editorData.blogType.charAt(0).toUpperCase() + editorData.blogType.slice(1)
-            //     : "Simple"
-            // )
+            setValue("title", editorData.title);
+            setValue("slug", editorData.slug);
+            setValue("category", editorData.category);
+            setFetchedContent(editorData.content); // Store content separately
+            setBlogType(
+              editorData.blogType
+                ? editorData.blogType.charAt(0).toUpperCase() + editorData.blogType.slice(1)
+                : "Simple"
+            )
             // Handle image preview
-            const base64String =editorData?.imageBase64
-            setImagePreview(base64String)
+            const base64String = editorData?.imageBase64;
+            setImagePreview(base64String);
           }
         })
         .catch((error) => {
-          console.error("Error fetching blog data:", error)
-        })
+          console.error("Error fetching blog data:", error);
+        });
     }
-  }, [editId, dispatch, setValue,blogType])
+  }, [editId, dispatch, setValue]);
 
   useEffect(() => {
     if (editor && fetchedContent) {
-      editor.commands.setContent(fetchedContent)
-      setFetchedContent(null) // Clear after setting to prevent re-renders
+      editor.commands.setContent(fetchedContent);
+      setFetchedContent(null); // Clear after setting to prevent re-renders
     }
-  }, [editor, fetchedContent])
+  }, [editor, fetchedContent]);
 
   // Update slug when title changes
   useEffect(() => {
@@ -219,157 +222,160 @@ export default function AddBlogIndex() {
       const slug = title
         .toLowerCase()
         .replace(/[^\w\s]/gi, "")
-        .replace(/\s+/g, "-")
+        .replace(/\s+/g, "-");
 
-      setValue("slug", slug)
+      setValue("slug", slug);
     }
-  }, [title, setValue])
+  }, [title, setValue]);
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0]
+    const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = () => {
-        setImagePreview(reader.result)
-      }
-      reader.readAsDataURL(file)
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
-  }
+  };
 
   // Handle editor image upload
   const handleEditorImageChange = (e) => {
-    const file = e.target.files[0]
+    const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = () => {
-        setEditorImagePreview(reader.result)
-        setEditorImageFile(file)
-      }
-      reader.readAsDataURL(file)
+        setEditorImagePreview(reader.result);
+        setEditorImageFile(file);
+      };
+      reader.readAsDataURL(file);
     }
-  }
+  };
 
   // Insert editor image
   const insertEditorImage = async () => {
     if (editor && editorImagePreview) {
-      editor.chain().focus().setImage({ src: editorImagePreview }).run()
-      setImageUploadOpen(false)
-      setEditorImageFile(null)
-      setEditorImagePreview(null)
-      
+      editor.chain().focus().setImage({ src: editorImagePreview }).run();
+      setImageUploadOpen(false);
+      setEditorImageFile(null);
+      setEditorImagePreview(null);
+
       // You can handle actual image upload to server here and replace with permanent URL
       // For now we're just using the base64 data
     }
-  }
+  };
 
- 
-const insertYoutubeVideo = () => {
-  if (editor && youtubeUrl) {
-    const videoId = getYoutubeVideoId(youtubeUrl)
-    if (videoId) {
-      editor.chain().focus()
-        .setYoutubeVideo({ src: youtubeUrl })
-        // Add these commands to create space after the video
-        .command(({ tr }) => {
-          const { $to } = tr.selection
-          const after = $to.end()
-          if (after !== undefined) {
-            tr.insert(after, editor.schema.nodes.paragraph.create())
-          }
-          return true
-        })
-        .run()
-      setYoutubeDialogOpen(false)
-      setYoutubeUrl("")
-    } else {
-      enqueueSnackbar("Invalid YouTube URL", { variant: "error" })
+  const insertYoutubeVideo = () => {
+    if (editor && youtubeUrl) {
+      const videoId = getYoutubeVideoId(youtubeUrl);
+      if (videoId) {
+        editor
+          .chain()
+          .focus()
+          .setYoutubeVideo({ src: youtubeUrl })
+          // Add these commands to create space after the video
+          .command(({ tr }) => {
+            const { $to } = tr.selection;
+            const after = $to.end();
+            if (after !== undefined) {
+              tr.insert(after, editor.schema.nodes.paragraph.create());
+            }
+            return true;
+          })
+          .run();
+        setYoutubeDialogOpen(false);
+        setYoutubeUrl("");
+      } else {
+        enqueueSnackbar("Invalid YouTube URL", { variant: "error" });
+      }
     }
-  }
-}
+  };
   const onSubmit = async (data) => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
       // Get editor content
-      const content = editor ? editor.getHTML() : ""
+      const content = editor ? editor.getHTML() : "";
 
       // Determine which category to use (selected or new)
-      const finalCategory = data.category
+      const finalCategory = data.category;
 
       // Construct the data object for the API call
-      const formData = new FormData()
-      formData.append("title", data.title)
-      formData.append("content", content)
-      formData.append("slug", data.slug)
-      formData.append("category", data.category)
-      formData.append("blogType", blogType.toLowerCase())
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("content", content);
+      formData.append("slug", data.slug);
+      formData.append("category", data.category);
+      formData.append("blogType", blogType.toLowerCase());
       if (blogType === "Lead") {
-        formData.append("position", formPosition.toLowerCase())
+        formData.append("position", formPosition.toLowerCase());
       }
-      console.log(fileInputRef.current.files[0], "file")
+      console.log(fileInputRef.current.files[0], "file");
       // Add file if selected
       if (fileInputRef.current.files[0]) {
-        formData.append("file", fileInputRef.current.files[0])
+        formData.append("file", fileInputRef.current.files[0]);
       }
       // Dispatch add blog action
       if (formData && !editId) {
-        console.log(...formData)
+        console.log(...formData);
         dispatch(addblog(formData))
           .unwrap()
           .then((data) => {
-            console.log(data)
-            setValue("title", "")
-            setValue("slug", "")
-            setValue("category", "")
-            setImagePreview(null)
-            editor.commands.setContent("")
-            enqueueSnackbar("Blog post created successfully", { variant: "success" })
-            router.push("/admin/all-blog")
+            console.log(data);
+            setValue("title", "");
+            setValue("slug", "");
+            setValue("category", "");
+            setImagePreview(null);
+            editor.commands.setContent("");
+            enqueueSnackbar("Blog post created successfully", {
+              variant: "success",
+            });
+            router.push("/admin/all-blog");
           })
           .catch((error) => {
-            console.log(error)
-            enqueueSnackbar("Failed to create blog post", { variant: "error" })
-          })
+            console.log(error);
+            enqueueSnackbar("Failed to create blog post", { variant: "error" });
+          });
       } else if (formData && editId) {
         dispatch(UpdateBlogAction({ editId, formData }))
           .unwrap()
           .then(() => {
-            dispatch(getAllBlogsAction())
-            router.push("/admin/manage-blogs")
-            enqueueSnackbar("Blog update successfully", { variant: "success" })
+            dispatch(getAllBlogsAction());
+            router.push("/admin/manage-blogs");
+            enqueueSnackbar("Blog update successfully", { variant: "success" });
           })
           .catch((error) => {
-            enqueueSnackbar(error, { variant: "error" })
-          })
+            enqueueSnackbar(error, { variant: "error" });
+          });
       }
 
       if (fileInputRef.current) {
-        fileInputRef.current.value = ""
+        fileInputRef.current.value = "";
       }
     } catch (error) {
-      console.error("Error submitting form:", error)
-      enqueueSnackbar("Error submitting form", { variant: "error" })
+      console.error("Error submitting form:", error);
+      enqueueSnackbar("Error submitting form", { variant: "error" });
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   // Add image to editor
   const openImageUploadDialog = () => {
-    setImageUploadOpen(true)
-  }
+    setImageUploadOpen(true);
+  };
 
   // Set link in editor
   const setLink = () => {
-    const url = prompt("Enter URL")
+    const url = prompt("Enter URL");
     if (url && editor) {
-      editor.chain().focus().setLink({ href: url }).run()
+      editor.chain().focus().setLink({ href: url }).run();
     }
-  }
+  };
 
   // Open YouTube embed dialog
   const openYoutubeDialog = () => {
-    setYoutubeDialogOpen(true)
-  }
+    setYoutubeDialogOpen(true);
+  };
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Card elevation={3}>
@@ -383,7 +389,12 @@ const insertYoutubeVideo = () => {
             borderTopRightRadius: 1,
           }}
         >
-          <Typography variant="h4" component="h1" gutterBottom fontWeight="bold">
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            fontWeight="bold"
+          >
             {editId ? "Edit Blog Post" : "Create New Blog Post"}
           </Typography>
           <Typography variant="subtitle1" sx={{ opacity: 0.8 }}>
@@ -392,13 +403,21 @@ const insertYoutubeVideo = () => {
         </Box>
 
         <CardContent sx={{ p: 4 }}>
-          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <Box sx={{ mb: 4 }}>
               <Typography variant="h6" gutterBottom>
                 Featured Image
               </Typography>
 
-              <ImageUploadBox onClick={() => fileInputRef.current.click()} elevation={0}>
+              <ImageUploadBox
+                onClick={() => fileInputRef.current.click()}
+                elevation={0}
+              >
                 <input
                   type="file"
                   ref={fileInputRef}
@@ -433,7 +452,9 @@ const insertYoutubeVideo = () => {
                   </Box>
                 ) : (
                   <>
-                    <CloudUploadIcon sx={{ fontSize: 48, color: "primary.main", mb: 2 }} />
+                    <CloudUploadIcon
+                      sx={{ fontSize: 48, color: "primary.main", mb: 2 }}
+                    />
                     <Typography variant="body1" gutterBottom>
                       Click to upload an image
                     </Typography>
@@ -447,13 +468,12 @@ const insertYoutubeVideo = () => {
 
             <TextField
               fullWidth
-               id="outlined"
+              id="outlined"
               label="Title"
               name="title"
               {...register("title", { required: true })}
               required
               sx={{ mb: 3 }}
-              
               variant="outlined"
               InputLabelProps={{ shrink: true }}
             />
@@ -501,90 +521,112 @@ const insertYoutubeVideo = () => {
                     <FormatItalicIcon fontSize="small" />
                   </EditorToolbarButton>
                 </Tooltip>
-{/* Heading Buttons */}
-<Tooltip title="Heading 1">
-    <EditorToolbarButton
-      active={editor?.isActive("heading", { level: 1 })}
-      disabled={!editor}
-      onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-      size="small"
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <TitleIcon fontSize="small" />
-        <Typography variant="caption" sx={{ ml: 0.5 }}>1</Typography>
-      </Box>
-    </EditorToolbarButton>
-  </Tooltip>
+                {/* Heading Buttons */}
+                <Tooltip title="Heading 1">
+                  <EditorToolbarButton
+                    active={editor?.isActive("heading", { level: 1 })}
+                    disabled={!editor}
+                    onClick={() =>
+                      editor.chain().focus().toggleHeading({ level: 1 }).run()
+                    }
+                    size="small"
+                  >
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <TitleIcon fontSize="small" />
+                      <Typography variant="caption" sx={{ ml: 0.5 }}>
+                        1
+                      </Typography>
+                    </Box>
+                  </EditorToolbarButton>
+                </Tooltip>
 
-  <Tooltip title="Heading 2">
-    <EditorToolbarButton
-      active={editor?.isActive("heading", { level: 2 })}
-      disabled={!editor}
-      onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-      size="small"
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <TitleIcon fontSize="small" />
-        <Typography variant="caption" sx={{ ml: 0.5 }}>2</Typography>
-      </Box>
-    </EditorToolbarButton>
-  </Tooltip>
+                <Tooltip title="Heading 2">
+                  <EditorToolbarButton
+                    active={editor?.isActive("heading", { level: 2 })}
+                    disabled={!editor}
+                    onClick={() =>
+                      editor.chain().focus().toggleHeading({ level: 2 }).run()
+                    }
+                    size="small"
+                  >
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <TitleIcon fontSize="small" />
+                      <Typography variant="caption" sx={{ ml: 0.5 }}>
+                        2
+                      </Typography>
+                    </Box>
+                  </EditorToolbarButton>
+                </Tooltip>
 
-  <Tooltip title="Heading 3">
-    <EditorToolbarButton
-      active={editor?.isActive("heading", { level: 3 })}
-      disabled={!editor}
-      onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-      size="small"
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <TitleIcon fontSize="small" />
-        <Typography variant="caption" sx={{ ml: 0.5 }}>3</Typography>
-      </Box>
-    </EditorToolbarButton>
-  </Tooltip>
+                <Tooltip title="Heading 3">
+                  <EditorToolbarButton
+                    active={editor?.isActive("heading", { level: 3 })}
+                    disabled={!editor}
+                    onClick={() =>
+                      editor.chain().focus().toggleHeading({ level: 3 }).run()
+                    }
+                    size="small"
+                  >
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <TitleIcon fontSize="small" />
+                      <Typography variant="caption" sx={{ ml: 0.5 }}>
+                        3
+                      </Typography>
+                    </Box>
+                  </EditorToolbarButton>
+                </Tooltip>
 
-  <Tooltip title="Heading 4">
-    <EditorToolbarButton
-      active={editor?.isActive("heading", { level: 4 })}
-      disabled={!editor}
-      onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-      size="small"
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <TitleIcon fontSize="small" />
-        <Typography variant="caption" sx={{ ml: 0.5 }}>4</Typography>
-      </Box>
-    </EditorToolbarButton>
-  </Tooltip>
+                <Tooltip title="Heading 4">
+                  <EditorToolbarButton
+                    active={editor?.isActive("heading", { level: 4 })}
+                    disabled={!editor}
+                    onClick={() =>
+                      editor.chain().focus().toggleHeading({ level: 4 }).run()
+                    }
+                    size="small"
+                  >
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <TitleIcon fontSize="small" />
+                      <Typography variant="caption" sx={{ ml: 0.5 }}>
+                        4
+                      </Typography>
+                    </Box>
+                  </EditorToolbarButton>
+                </Tooltip>
 
-  <Tooltip title="Bullet List">
-    <EditorToolbarButton
-      active={editor?.isActive("bulletList")}
-      disabled={!editor}
-      onClick={() => editor.chain().focus().toggleBulletList().run()}
-      size="small"
-    >
-      <FormatListBulletedIcon fontSize="small" />
-    </EditorToolbarButton>
-  </Tooltip>
+                <Tooltip title="Bullet List">
+                  <EditorToolbarButton
+                    active={editor?.isActive("bulletList")}
+                    disabled={!editor}
+                    onClick={() =>
+                      editor.chain().focus().toggleBulletList().run()
+                    }
+                    size="small"
+                  >
+                    <FormatListBulletedIcon fontSize="small" />
+                  </EditorToolbarButton>
+                </Tooltip>
 
-  <Tooltip title="Numbered List">
-    <EditorToolbarButton
-      active={editor?.isActive("orderedList")}
-      disabled={!editor}
-      onClick={() => editor.chain().focus().toggleOrderedList().run()}
-      size="small"
-    >
-      <FormatListNumberedIcon fontSize="small" />
-    </EditorToolbarButton>
-  </Tooltip>
-  
+                <Tooltip title="Numbered List">
+                  <EditorToolbarButton
+                    active={editor?.isActive("orderedList")}
+                    disabled={!editor}
+                    onClick={() =>
+                      editor.chain().focus().toggleOrderedList().run()
+                    }
+                    size="small"
+                  >
+                    <FormatListNumberedIcon fontSize="small" />
+                  </EditorToolbarButton>
+                </Tooltip>
+
                 <Tooltip title="Blockquote">
                   <EditorToolbarButton
                     active={editor?.isActive("blockquote")}
                     disabled={!editor}
-                    onClick={() => editor.chain().focus().toggleBlockquote().run()}
+                    onClick={() =>
+                      editor.chain().focus().toggleBlockquote().run()
+                    }
                     size="small"
                   >
                     <FormatQuoteIcon fontSize="small" />
@@ -595,7 +637,9 @@ const insertYoutubeVideo = () => {
                   <EditorToolbarButton
                     active={editor?.isActive("codeBlock")}
                     disabled={!editor}
-                    onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+                    onClick={() =>
+                      editor.chain().focus().toggleCodeBlock().run()
+                    }
                     size="small"
                   >
                     <CodeIcon fontSize="small" />
@@ -614,19 +658,19 @@ const insertYoutubeVideo = () => {
                 </Tooltip>
 
                 <Tooltip title="Add Image">
-                  <EditorToolbarButton 
-                    disabled={!editor} 
-                    onClick={openImageUploadDialog} 
+                  <EditorToolbarButton
+                    disabled={!editor}
+                    onClick={openImageUploadDialog}
                     size="small"
                   >
                     <ImageIcon fontSize="small" />
                   </EditorToolbarButton>
                 </Tooltip>
-                
+
                 <Tooltip title="Embed YouTube Video">
-                  <EditorToolbarButton 
-                    disabled={!editor} 
-                    onClick={openYoutubeDialog} 
+                  <EditorToolbarButton
+                    disabled={!editor}
+                    onClick={openYoutubeDialog}
                     size="small"
                   >
                     <YouTubeIcon fontSize="small" />
@@ -668,7 +712,11 @@ const insertYoutubeVideo = () => {
                   name="category"
                   control={control}
                   render={({ field }) => (
-                    <MuiSelect labelId="category-label" label="Select Category" {...field}>
+                    <MuiSelect
+                      labelId="category-label"
+                      label="Select Category"
+                      {...field}
+                    >
                       {categories.map((category) => (
                         <MenuItem key={category._id} value={category.catName}>
                           {category.catName}
@@ -689,7 +737,7 @@ const insertYoutubeVideo = () => {
               }}
             >
               <FormControl fullWidth>
-                <InputLabel  id="blogType">Blog Type</InputLabel>
+                <InputLabel id="blogType">Blog Type</InputLabel>
                 <MuiSelect
                   labelId="blogType"
                   label="Blog Type"
@@ -712,7 +760,9 @@ const insertYoutubeVideo = () => {
                 }}
               >
                 <FormControl fullWidth>
-                  <InputLabel id="form-position-label">Form Position</InputLabel>
+                  <InputLabel id="form-position-label">
+                    Form Position
+                  </InputLabel>
                   <MuiSelect
                     labelId="form-position-label"
                     label="Form Position"
@@ -734,14 +784,24 @@ const insertYoutubeVideo = () => {
                 variant="contained"
                 size="large"
                 disabled={isSubmitting}
-                startIcon={isSubmitting ? <CircularProgress size={20} /> : <PublishIcon />}
+                startIcon={
+                  isSubmitting ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    <PublishIcon />
+                  )
+                }
                 sx={{
                   py: 1.5,
                   px: 4,
                   fontSize: "1.1rem",
                 }}
               >
-                {isSubmitting ? "Publishing..." : (editId ? "Update Blog Post" : "Publish Blog Post")}
+                {isSubmitting
+                  ? "Publishing..."
+                  : editId
+                  ? "Update Blog Post"
+                  : "Publish Blog Post"}
               </Button>
             </Box>
           </Box>
@@ -749,8 +809,8 @@ const insertYoutubeVideo = () => {
       </Card>
 
       {/* Image Upload Dialog */}
-      <Dialog 
-        open={imageUploadOpen} 
+      <Dialog
+        open={imageUploadOpen}
         onClose={() => setImageUploadOpen(false)}
         maxWidth="sm"
         fullWidth
@@ -758,7 +818,10 @@ const insertYoutubeVideo = () => {
         <DialogTitle>Upload Image</DialogTitle>
         <DialogContent>
           <Box sx={{ mt: 2 }}>
-            <ImageUploadBox onClick={() => editorImageInputRef.current.click()} elevation={0}>
+            <ImageUploadBox
+              onClick={() => editorImageInputRef.current.click()}
+              elevation={0}
+            >
               <input
                 type="file"
                 ref={editorImageInputRef}
@@ -792,7 +855,9 @@ const insertYoutubeVideo = () => {
                 </Box>
               ) : (
                 <>
-                  <CloudUploadIcon sx={{ fontSize: 48, color: "primary.main", mb: 2 }} />
+                  <CloudUploadIcon
+                    sx={{ fontSize: 48, color: "primary.main", mb: 2 }}
+                  />
                   <Typography variant="body1" gutterBottom>
                     Click to upload an image
                   </Typography>
@@ -806,9 +871,9 @@ const insertYoutubeVideo = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setImageUploadOpen(false)}>Cancel</Button>
-          <Button 
+          <Button
             onClick={insertEditorImage}
-            variant="contained" 
+            variant="contained"
             disabled={!editorImagePreview}
           >
             Insert Image
@@ -817,8 +882,8 @@ const insertYoutubeVideo = () => {
       </Dialog>
 
       {/* YouTube Embed Dialog */}
-      <Dialog 
-        open={youtubeDialogOpen} 
+      <Dialog
+        open={youtubeDialogOpen}
         onClose={() => setYoutubeDialogOpen(false)}
         maxWidth="sm"
         fullWidth
@@ -839,9 +904,9 @@ const insertYoutubeVideo = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setYoutubeDialogOpen(false)}>Cancel</Button>
-          <Button 
+          <Button
             onClick={insertYoutubeVideo}
-            variant="contained" 
+            variant="contained"
             disabled={!youtubeUrl}
             startIcon={<YouTubeIcon />}
           >
@@ -852,271 +917,268 @@ const insertYoutubeVideo = () => {
 
       {/* Custom styles for TipTap */}
       <style jsx global>{`
-  /* Base editor styles */
-  .ProseMirror {
-    min-height: 300px;
-    outline: none;
-    font-family: inherit;
-    padding: 0.75rem;
-    color: #333;
-    line-height: 1.6;
-  }
+        /* Base editor styles */
+        .ProseMirror {
+          min-height: 300px;
+          outline: none;
+          font-family: inherit;
+          padding: 0.75rem;
+          color: #333;
+          line-height: 1.6;
+        }
 
-  /* Placeholder text */
-  .ProseMirror p.is-editor-empty:first-child::before {
-    content: attr(data-placeholder);
-    float: left;
-    color: #adb5bd;
-    pointer-events: none;
-    height: 0;
-  }
+        /* Placeholder text */
+        .ProseMirror p.is-editor-empty:first-child::before {
+          content: attr(data-placeholder);
+          float: left;
+          color: #adb5bd;
+          pointer-events: none;
+          height: 0;
+        }
 
-  /* Basic text elements */
-  .ProseMirror p {
-    margin: 0.75rem 0;
-  }
+        /* Basic text elements */
+        .ProseMirror p {
+          margin: 0.75rem 0;
+        }
 
-  /* Images */
-  .ProseMirror img {
-    max-width: 100%;
-    height: auto;
-    margin: 1.5rem 0;
-    border-radius: 4px;
-    display: block;
-  }
+        /* Images */
+        .ProseMirror img {
+          max-width: 100%;
+          height: auto;
+          margin: 1.5rem 0;
+          border-radius: 4px;
+          display: block;
+        }
 
-  /* Blockquotes */
-  .ProseMirror blockquote {
-    border-left: 4px solid #1976d2;
-    padding: 0.75rem 1.25rem;
-    margin: 1.5rem 0;
-    background-color: rgba(25, 118, 210, 0.05);
-    border-radius: 0 4px 4px 0;
-    font-style: italic;
-    color: #555;
-  }
+        /* Blockquotes */
+        .ProseMirror blockquote {
+          border-left: 4px solid #1976d2;
+          padding: 0.75rem 1.25rem;
+          margin: 1.5rem 0;
+          background-color: rgba(25, 118, 210, 0.05);
+          border-radius: 0 4px 4px 0;
+          font-style: italic;
+          color: #555;
+        }
 
-  /* Code blocks */
-  .ProseMirror pre {
-    background-color: #1e293b;
-    color: #e2e8f0;
-    padding: 1rem 1.25rem;
-    border-radius: 6px;
-    overflow-x: auto;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    margin: 1.5rem 0;
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
+        /* Code blocks */
+        .ProseMirror pre {
+          background-color: #1e293b;
+          color: #e2e8f0;
+          padding: 1rem 1.25rem;
+          border-radius: 6px;
+          overflow-x: auto;
+          font-family: "Consolas", "Monaco", "Courier New", monospace;
+          margin: 1.5rem 0;
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
 
-  .ProseMirror code {
-    background-color: rgba(0, 0, 0, 0.05);
-    padding: 0.2em 0.4em;
-    border-radius: 3px;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 0.9em;
-  }
+        .ProseMirror code {
+          background-color: rgba(0, 0, 0, 0.05);
+          padding: 0.2em 0.4em;
+          border-radius: 3px;
+          font-family: "Consolas", "Monaco", "Courier New", monospace;
+          font-size: 0.9em;
+        }
 
-  /* Horizontal rule */
-  .ProseMirror hr {
-    border: none;
-    border-top: 2px solid rgba(0, 0, 0, 0.1);
-    margin: 2rem 0;
-  }
+        /* Horizontal rule */
+        .ProseMirror hr {
+          border: none;
+          border-top: 2px solid rgba(0, 0, 0, 0.1);
+          margin: 2rem 0;
+        }
 
+        .ProseMirror h1 {
+          font-size: 2.5rem; /* Largest size */
+          line-height: 1.2;
+          font-weight: 700;
+          margin: 2rem 0 1rem;
+          color: rgb(0, 0, 0);
+        }
 
-  
-  .ProseMirror h1 {
-    font-size: 2.5rem; /* Largest size */
-    line-height: 1.2;
-    font-weight: 700;
-    margin: 2rem 0 1rem;
-    color: rgb(0, 0, 0);
-}
+        .ProseMirror h2 {
+          font-size: 1.8rem; /* Smaller than h1 */
+          line-height: 1.35;
+          font-weight: 700;
+          margin: 1.75rem 0 0.875rem;
+          color: rgb(0, 0, 0);
+        }
 
-.ProseMirror h2 {
-    font-size: 1.8rem; /* Smaller than h1 */
-    line-height: 1.35;
-    font-weight: 700;
-    margin: 1.75rem 0 0.875rem;
-    color: rgb(0, 0, 0);
-}
+        .ProseMirror h3 {
+          font-size: 1.5rem; /* Smaller than h2 */
+          line-height: 1.4;
+          font-weight: 600;
+          margin: 1.5rem 0 0.75rem;
+          color: rgb(0, 0, 0);
+        }
 
-.ProseMirror h3 {
-    font-size: 1.5rem; /* Smaller than h2 */
-    line-height: 1.4;
-    font-weight: 600;
-    margin: 1.5rem 0 0.75rem;
-    color: rgb(0, 0, 0);
-}
+        .ProseMirror h4 {
+          font-size: 1.25rem; /* Smaller than h3 */
+          line-height: 1.45;
+          font-weight: 600;
+          margin: 1.25rem 0 0.625rem;
+          color: rgb(0, 0, 0);
+        }
 
-.ProseMirror h4 {
-    font-size: 1.25rem; /* Smaller than h3 */
-    line-height: 1.45;
-    font-weight: 600;
-    margin: 1.25rem 0 0.625rem;
-    color: rgb(0, 0, 0);
-}
+        .ProseMirror h5 {
+          font-size: 1.1rem; /* Smaller than h4 */
+          line-height: 1.5;
+          font-weight: 600;
+          margin: 1rem 0 0.5rem;
+          color: rgb(0, 0, 0);
+        }
 
-.ProseMirror h5 {
-    font-size: 1.1rem; /* Smaller than h4 */
-    line-height: 1.5;
-    font-weight: 600;
-    margin: 1rem 0 0.5rem;
-    color: rgb(0, 0, 0);
-}
+        .ProseMirror h6 {
+          font-size: 1rem; /* Smallest */
+          line-height: 1.5;
+          font-weight: 600;
+          margin: 1rem 0 0.5rem;
+          color: rgb(0, 0, 0);
+          font-style: italic;
+        }
 
-.ProseMirror h6 {
-    font-size: 1rem; /* Smallest */
-    line-height: 1.5;
-    font-weight: 600;
-    margin: 1rem 0 0.5rem;
-    color: rgb(0, 0, 0);
-    font-style: italic;
-}
+        /* List styling */
+        .ProseMirror ul,
+        .ProseMirror ol {
+          padding-left: 1.75rem;
+          margin: 1rem 0;
+        }
 
+        .ProseMirror ul {
+          list-style-type: disc;
+        }
 
-  /* List styling */
-  .ProseMirror ul,
-  .ProseMirror ol {
-    padding-left: 1.75rem;
-    margin: 1rem 0;
-  }
+        .ProseMirror ul ul {
+          list-style-type: circle;
+          margin: 0.25rem 0;
+        }
 
-  .ProseMirror ul {
-    list-style-type: disc;
-  }
+        .ProseMirror ul ul ul {
+          list-style-type: square;
+        }
 
-  .ProseMirror ul ul {
-    list-style-type: circle;
-    margin: 0.25rem 0;
-  }
+        .ProseMirror ol {
+          list-style-type: decimal;
+        }
 
-  .ProseMirror ul ul ul {
-    list-style-type: square;
-  }
+        .ProseMirror ol ol {
+          list-style-type: lower-alpha;
+          margin: 0.25rem 0;
+        }
 
-  .ProseMirror ol {
-    list-style-type: decimal;
-  }
+        .ProseMirror ol ol ol {
+          list-style-type: lower-roman;
+        }
 
-  .ProseMirror ol ol {
-    list-style-type: lower-alpha;
-    margin: 0.25rem 0;
-  }
+        .ProseMirror li {
+          margin: 0.5rem 0;
+          padding-left: 0.25rem;
+        }
 
-  .ProseMirror ol ol ol {
-    list-style-type: lower-roman;
-  }
+        .ProseMirror li p {
+          margin: 0.25rem 0;
+        }
 
-  .ProseMirror li {
-    margin: 0.5rem 0;
-    padding-left: 0.25rem;
-  }
+        /* Links */
+        .ProseMirror a {
+          color: #1976d2;
+          text-decoration: underline;
+          transition: color 0.2s;
+        }
 
-  .ProseMirror li p {
-    margin: 0.25rem 0;
-  }
+        .ProseMirror a:hover {
+          color: #0f5298;
+        }
 
-  /* Links */
-  .ProseMirror a {
-    color: #1976d2;
-    text-decoration: underline;
-    transition: color 0.2s;
-  }
+        /* YouTube embeds */
+        .ProseMirror .youtube-wrapper {
+          position: relative;
+          padding-bottom: 56.25%; /* 16:9 aspect ratio */
+          height: 0;
+          overflow: hidden;
+          margin: 1.5rem 0;
+          border-radius: 8px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-  .ProseMirror a:hover {
-    color: #0f5298;
-  }
-  
-  /* YouTube embeds */
-  .ProseMirror .youtube-wrapper {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
-    margin: 1.5rem 0;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .ProseMirror .youtube-wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-    border-radius: 8px;
-  }
+        .ProseMirror .youtube-wrapper iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border: 0;
+          border-radius: 8px;
+        }
 
-  /* Table styles */
-  .ProseMirror table {
-    border-collapse: collapse;
-    width: 100%;
-    margin: 1.5rem 0;
-    overflow: hidden;
-    border-radius: 4px;
-  }
+        /* Table styles */
+        .ProseMirror table {
+          border-collapse: collapse;
+          width: 100%;
+          margin: 1.5rem 0;
+          overflow: hidden;
+          border-radius: 4px;
+        }
 
-  .ProseMirror th {
-    background-color: rgba(25, 118, 210, 0.1);
-    font-weight: 600;
-    text-align: left;
-  }
+        .ProseMirror th {
+          background-color: rgba(25, 118, 210, 0.1);
+          font-weight: 600;
+          text-align: left;
+        }
 
-  .ProseMirror th,
-  .ProseMirror td {
-    border: 1px solid #e2e8f0;
-    padding: 0.75rem;
-  }
+        .ProseMirror th,
+        .ProseMirror td {
+          border: 1px solid #e2e8f0;
+          padding: 0.75rem;
+        }
 
-  .ProseMirror tr:nth-child(even) {
-    background-color: rgba(0, 0, 0, 0.02);
-  }
+        .ProseMirror tr:nth-child(even) {
+          background-color: rgba(0, 0, 0, 0.02);
+        }
 
-  /* Focus styles */
-  .ProseMirror:focus {
-    box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
-  }
+        /* Focus styles */
+        .ProseMirror:focus {
+          box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+        }
 
-  /* Selection styles */
-  .ProseMirror ::selection {
-    background: rgba(25, 118, 210, 0.2);
-  }
+        /* Selection styles */
+        .ProseMirror ::selection {
+          background: rgba(25, 118, 210, 0.2);
+        }
 
-  /* Editor active element styling */
-  .ProseMirror h1.has-focus,
-  .ProseMirror h2.has-focus,
-  .ProseMirror h3.has-focus,
-  .ProseMirror h4.has-focus,
-  .ProseMirror h5.has-focus,
-  .ProseMirror h6.has-focus,
-  .ProseMirror p.has-focus,
-  .ProseMirror li.has-focus {
-    background-color: rgba(25, 118, 210, 0.05);
-    border-radius: 3px;
-  }
+        /* Editor active element styling */
+        .ProseMirror h1.has-focus,
+        .ProseMirror h2.has-focus,
+        .ProseMirror h3.has-focus,
+        .ProseMirror h4.has-focus,
+        .ProseMirror h5.has-focus,
+        .ProseMirror h6.has-focus,
+        .ProseMirror p.has-focus,
+        .ProseMirror li.has-focus {
+          background-color: rgba(25, 118, 210, 0.05);
+          border-radius: 3px;
+        }
 
-  /* TaskList styling (if added as extension) */
-  .ProseMirror ul[data-type="taskList"] {
-    list-style: none;
-    padding: 0;
-  }
+        /* TaskList styling (if added as extension) */
+        .ProseMirror ul[data-type="taskList"] {
+          list-style: none;
+          padding: 0;
+        }
 
-  .ProseMirror ul[data-type="taskList"] li {
-    display: flex;
-    align-items: center;
-  }
+        .ProseMirror ul[data-type="taskList"] li {
+          display: flex;
+          align-items: center;
+        }
 
-  .ProseMirror ul[data-type="taskList"] li > label {
-    margin-right: 0.5rem;
-  }
+        .ProseMirror ul[data-type="taskList"] li > label {
+          margin-right: 0.5rem;
+        }
 
-  .ProseMirror ul[data-type="taskList"] li > div {
-    flex: 1;
-  }
-`}</style>
+        .ProseMirror ul[data-type="taskList"] li > div {
+          flex: 1;
+        }
+      `}</style>
     </Container>
-  )
+  );
 }

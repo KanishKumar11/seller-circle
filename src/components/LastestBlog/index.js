@@ -245,7 +245,7 @@ const LatestBlog = ({ blog }) => {
           <img
             src={imageUrl}
             alt={latestB?.title || "Blog cover"}
-            className="transition-transform duration-400 ease-in-out object-cover center rounded-full w-full h-full"
+            className="transition-transform duration-400 ease-in-out object-cover center rounded-[20px] w-full h-full"
           />
         </div>
         <div className="md:w-3/5 p-4">
