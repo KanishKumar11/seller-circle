@@ -1,4 +1,3 @@
-
 // "use client";
 // import { BlogPostSkeleton } from "@/components";
 // import { getBlogByIdAction } from "@/store/slices/BlogSlice";
@@ -272,8 +271,6 @@
 //     </motion.div>
 //   );
 // }
-
-
 
 // "use client";
 // import { Nunito_Sans } from "next/font/google";
@@ -549,8 +546,6 @@
 //   );
 // }
 
-
-
 "use client";
 import { Nunito_Sans } from "next/font/google";
 import { BlogPostSkeleton } from "@/components";
@@ -564,8 +559,8 @@ import { RelatedBlogList } from "@/components";
 
 // Import Nunito Sans font
 const nunito = Nunito_Sans({
-  weight: ['300', '400', '600', '700'],
-  subsets: ['latin'],
+  weight: ["300", "400", "600", "700"],
+  subsets: ["latin"],
 });
 
 export default function BlogPost() {
@@ -645,9 +640,9 @@ export default function BlogPost() {
 
     const handleInputChange = (e) => {
       const { name, value } = e.target;
-      setLocalFormData(prev => ({
+      setLocalFormData((prev) => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     };
 
@@ -662,7 +657,9 @@ export default function BlogPost() {
         className="bg-white rounded-xl p-4 sm:p-6 shadow-md mb-8"
         variants={itemVariants}
       >
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">Let's Connect</h3>
+        <h3 className="text-xl font-semibold text-gray-900 mb-4">
+          Let&#39;s Connect
+        </h3>
         <div className="bg-[#0099e5] p-6 rounded-3xl">
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
