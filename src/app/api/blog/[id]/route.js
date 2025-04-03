@@ -1,5 +1,3 @@
-
-
 // File: app/api/blog/[id]/route.js
 import { connectDB } from "@/app/lib/db";
 import { BlogModel } from "@/app/lib/models/blog.models.js";
@@ -47,32 +45,28 @@ export async function GET(request, { params }) {
   }
 }
 
-
 export const PUT = async (req, { params }) => {
   await connectDB();
-  const { id: blogId } = await params; 
+  const { id: blogId } = await params;
   try {
-
-
     const blog = await BlogModel.findById(blogId);
-    
+
     if (!blog) {
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
 
     const data = await req.formData();
 
-    
     const title = data.get("title");
     const content = data.get("content");
     const slug = data.get("slug");
     const file = data.get("file");
     const category = data.get("category");
+    const metaDescription = data.get("metaDescription");
     const blogType = data.get("blogType");
     // const position = data.get("FormPosition");
     const position = data.get("position");
 
-    
     const updatedFields = {};
 
     if (title) updatedFields.title = title;
@@ -81,51 +75,65 @@ export const PUT = async (req, { params }) => {
     if (category) updatedFields.category = category;
     if (blogType) updatedFields.blogType = blogType;
     if (position) updatedFields.position = position;
+    if (metaDescription) updatedFields.metaDescription = metaDescription;
 
-   
     if (file) {
-       // Configure Appwrite client
-            const client = new Client()
-              .setEndpoint(process.env.APPWRITE_PROJECT_API) // Appwrite endpoint
-              .setProject(process.env.APPWRITE_PROJECT_ID); // Appwrite project ID
-            
-            client.headers = {
-              ...client.headers,
-              'X-Appwrite-Key': process.env.API_KEY, // API key for authentication
-            };
-      
-            const storage = new Storage(client);
-      
-            // Upload file to Appwrite storage
-            const response = await storage.createFile(
-              process.env.Bucket_ID, // Appwrite bucket ID
-              ID.unique(), // Generate unique file ID
-              file
-            );
-            const fileUrl = `${process.env.APPWRITE_PROJECT_API}/storage/buckets/${process.env.Bucket_ID}/files/${response.$id}/view?project=${process.env.APPWRITE_PROJECT_ID}`;
-      
-      
+      // Configure Appwrite client
+      const client = new Client()
+        .setEndpoint(process.env.APPWRITE_PROJECT_API) // Appwrite endpoint
+        .setProject(process.env.APPWRITE_PROJECT_ID); // Appwrite project ID
+
+      client.headers = {
+        ...client.headers,
+        "X-Appwrite-Key": process.env.API_KEY, // API key for authentication
+      };
+
+      const storage = new Storage(client);
+
+      // Upload file to Appwrite storage
+      const response = await storage.createFile(
+        process.env.Bucket_ID, // Appwrite bucket ID
+        ID.unique(), // Generate unique file ID
+        file
+      );
+      const fileUrl = `${process.env.APPWRITE_PROJECT_API}/storage/buckets/${process.env.Bucket_ID}/files/${response.$id}/view?project=${process.env.APPWRITE_PROJECT_ID}`;
+
       updatedFields.filename = file.name;
       updatedFields.contentType = file.type;
-      updatedFields.imageBase64 = fileUrl; 
+      updatedFields.imageBase64 = fileUrl;
     }
 
-  
-    const updatedBlog = await BlogModel.findByIdAndUpdate(blogId, updatedFields, {
-      new: true,
-    });
+    const updatedBlog = await BlogModel.findByIdAndUpdate(
+      blogId,
+      updatedFields,
+      {
+        new: true,
+      }
+    );
 
     if (!updatedBlog) {
-      return NextResponse.json({ error: "Failed to update blog" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Failed to update blog" },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({ success: true, message: "Blog updated successfully", data: updatedBlog }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Blog updated successfully",
+        data: updatedBlog,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Something Went Wrong", details: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: "Something Went Wrong", details: error.message },
+      { status: 500 }
+    );
   }
 };
-
 
 export async function DELETE(request, { params }) {
   await connectDB();

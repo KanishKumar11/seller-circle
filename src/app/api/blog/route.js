@@ -3,7 +3,7 @@ import authModels from "@/app/lib/models/auth.models";
 import { BlogModel } from "@/app/lib/models/blog.models.js";
 import { validateToken } from "@/app/middleware/validate.middleware.js";
 // import ResponseUtil from "@/app/utility/response.utility.js"
-import { Client, Storage, ID } from "appwrite";  // Ensure Appwrite SDK is imported
+import { Client, Storage, ID } from "appwrite"; // Ensure Appwrite SDK is imported
 import { NextResponse } from "next/server";
 
 export const POST = async (req) => {
@@ -41,6 +41,7 @@ export const POST = async (req) => {
       const slug = data.get("slug");
       const file = data.get("file");
       const category = data.get("category");
+      const metaDescription = data.get("metaDescription");
       const blogType = data.get("blogType");
       const position = data.get("position");
 
@@ -55,10 +56,10 @@ export const POST = async (req) => {
       const client = new Client()
         .setEndpoint(process.env.APPWRITE_PROJECT_API) // Appwrite endpoint
         .setProject(process.env.APPWRITE_PROJECT_ID); // Appwrite project ID
-      
+
       client.headers = {
         ...client.headers,
-        'X-Appwrite-Key': process.env.API_KEY, // API key for authentication
+        "X-Appwrite-Key": process.env.API_KEY, // API key for authentication
       };
 
       const storage = new Storage(client);
@@ -80,6 +81,7 @@ export const POST = async (req) => {
         imageBase64: fileUrl, // Save the constructed URL
         authID: id,
         category,
+        metaDescription,
         blogType: blogType || "simple",
         position: position || "right",
       });
@@ -98,7 +100,6 @@ export const POST = async (req) => {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };
-
 
 export const GET = async () => {
   try {
@@ -122,5 +123,3 @@ export const GET = async () => {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };
-
-

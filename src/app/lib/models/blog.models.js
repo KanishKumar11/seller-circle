@@ -10,7 +10,8 @@ const BlogSchema = new mongoose.Schema({
   authID : { type: mongoose.Schema.Types.ObjectId, ref: "Auth" },
   blogType : { type: String, enum : ["simple", "lead"], default: "simple" },
   category:{type: String, required: true},
-  position : { type: String, enum : ["left", "right"], default: "right" }
+  position : { type: String, enum : ["left", "right"], default: "right" },
+  metaDescription: { type: String, required: false, maxlength: 160 }
   
 },{timestamps: true});
 

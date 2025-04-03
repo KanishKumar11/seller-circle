@@ -330,8 +330,8 @@ import SpinnerLoader from "@/common/Loader";
 
 // Apply Nunito Sans font
 const nunito = Nunito_Sans({
-  weight: ['300', '400', '600', '700'],
-  subsets: ['latin'],
+  weight: ["300", "400", "600", "700"],
+  subsets: ["latin"],
 });
 
 // Styled Card with a consistent, modern design
@@ -387,6 +387,7 @@ const ImageOverlay = styled(Box)({
 });
 
 const BlogCard = ({ imgUrl, category, title, content, blog, blogData }) => {
+  console.log(blogData);
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const truncateText = (text, maxLength) => {
     if (!text) return "";
@@ -399,6 +400,7 @@ const BlogCard = ({ imgUrl, category, title, content, blog, blogData }) => {
   const date = new Date(authdata.createdAt || Date.now());
   const formattedDate = date.toLocaleDateString();
   const contentDiscription = blogData?.content || null || "";
+  const metaDescription = blogData?.metaDescription || null || "";
 
   // Handle card click with loading state
   const handleCardClick = () => {
@@ -461,7 +463,7 @@ const BlogCard = ({ imgUrl, category, title, content, blog, blogData }) => {
       animate="visible"
       whileHover="hover"
       onClick={!isLoading ? handleCardClick : undefined}
-      className={nunito.className} 
+      className={nunito.className}
     >
       <StyledCard>
         {isLoading && (
@@ -480,9 +482,16 @@ const BlogCard = ({ imgUrl, category, title, content, blog, blogData }) => {
             }}
           >
             {/* <CircularProgress size={40} color="primary" /> */}
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <SpinnerLoader />
-    </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+              }}
+            >
+              <SpinnerLoader />
+            </div>
           </Box>
         )}
 
@@ -594,10 +603,11 @@ const BlogCard = ({ imgUrl, category, title, content, blog, blogData }) => {
               }}
               dangerouslySetInnerHTML={{
                 __html: truncateText(
-                  contentDiscription ||
+                  metaDescription ||
+                    contentDiscription ||
                     blog ||
                     "Click on the Read Post to open this post [...]",
-                  80
+                  160
                 ),
               }}
             />
@@ -630,10 +640,7 @@ const BlogCard = ({ imgUrl, category, title, content, blog, blogData }) => {
 
 export default BlogCard;
 
-
-
-
-//different blog card 
+//different blog card
 // "use client";
 // import React, { useState, useRef, useEffect } from "react";
 // import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
@@ -721,7 +728,6 @@ export default BlogCard;
 //   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 // </Box>
 
-
 //         {/* Content */}
 //         <div className="absolute inset-0 p-4 flex flex-col justify-between">
 //           {/* Top Section */}
@@ -762,7 +768,7 @@ export default BlogCard;
 //             <div className="space-y-3 mb-4">
 //               <div className="flex items-center gap-2 text-white">
 //                 <Avatar
-               
+
 //                   src={authdata?.imageBase64}
 
 //                   alt={authdata.name || "Author"}
@@ -827,5 +833,3 @@ export default BlogCard;
 // };
 
 // export default BlogCard;
-
-
