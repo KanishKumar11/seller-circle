@@ -793,7 +793,11 @@ export default function BlogPost() {
               </div>
 
               <div className="prose prose-sm sm:prose-base lg:prose-lg max-w-none text-gray-700 leading-relaxed mb-10">
-                <div dangerouslySetInnerHTML={{ __html: processedContent }} />
+                {/* <div dangerouslySetInnerHTML={{ __html: processedContent }} />
+              </div> */}
+              <>
+              {{  processedContent }}
+              </>
               </div>
             </motion.div>
 
