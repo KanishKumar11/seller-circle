@@ -176,6 +176,7 @@ export default function AddBlogIndex() {
       slug: "",
       category: "",
       file: "",
+      metaDescription: "",
     },
   });
 
@@ -188,16 +189,19 @@ export default function AddBlogIndex() {
         .unwrap()
         .then((data) => {
           const editorData = data.find((blog) => blog._id === editId);
+          console.log(editorData);
           if (editorData) {
             setValue("title", editorData.title);
             setValue("slug", editorData.slug);
             setValue("category", editorData.category);
+            setValue("metaDescription", editorData.metaDescription || "");
             setFetchedContent(editorData.content); // Store content separately
             setBlogType(
               editorData.blogType
-                ? editorData.blogType.charAt(0).toUpperCase() + editorData.blogType.slice(1)
+                ? editorData.blogType.charAt(0).toUpperCase() +
+                    editorData.blogType.slice(1)
                 : "Simple"
-            )
+            );
             // Handle image preview
             const base64String = editorData?.imageBase64;
             setImagePreview(base64String);
@@ -306,15 +310,13 @@ export default function AddBlogIndex() {
       formData.append("slug", data.slug);
       formData.append("category", data.category);
       formData.append("blogType", blogType.toLowerCase());
+      formData.append("metaDescription", data.metaDescription || "");
       if (blogType === "Lead") {
         formData.append("position", formPosition.toLowerCase());
       }
-      console.log(fileInputRef.current.files[0], "file");
-      // Add file if selected
       if (fileInputRef.current.files[0]) {
         formData.append("file", fileInputRef.current.files[0]);
       }
-      // Dispatch add blog action
       if (formData && !editId) {
         console.log(...formData);
         dispatch(addblog(formData))
@@ -324,6 +326,7 @@ export default function AddBlogIndex() {
             setValue("title", "");
             setValue("slug", "");
             setValue("category", "");
+            setValue("metaDescription", "");
             setImagePreview(null);
             editor.commands.setContent("");
             enqueueSnackbar("Blog post created successfully", {
@@ -477,7 +480,18 @@ export default function AddBlogIndex() {
               variant="outlined"
               InputLabelProps={{ shrink: true }}
             />
-
+            <TextField
+              fullWidth
+              id="metaDescription"
+              label="Meta Description"
+              name="metaDescription"
+              {...register("metaDescription")}
+              sx={{ mb: 3 }}
+              variant="outlined"
+              InputLabelProps={{ shrink: true }}
+              inputProps={{ maxLength: 160 }}
+              helperText={`SEO description (max 160 characters)`}
+            />
             <Typography variant="h6" gutterBottom>
               Content
             </Typography>
