@@ -53,6 +53,7 @@ import {
 import { useSearchParams, useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
 import Youtube from "@tiptap/extension-youtube";
+import SpinnerLoader from "@/common/Loader";
 
 // Styled components
 const VisuallyHiddenInput = styled("input")`
@@ -118,6 +119,8 @@ export default function AddBlogIndex() {
   const [fetchedContent, setFetchedContent] = useState(null);
   const [blogType, setBlogType] = useState("Simple");
   const [formPosition, setFormPosition] = useState("Right");
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -185,6 +188,8 @@ export default function AddBlogIndex() {
 
   useEffect(() => {
     if (editId) {
+      setIsLoading(true);
+
       dispatch(getAllBlogsAction())
         .unwrap()
         .then((data) => {
@@ -209,6 +214,9 @@ export default function AddBlogIndex() {
         })
         .catch((error) => {
           console.error("Error fetching blog data:", error);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   }, [editId, dispatch, setValue]);
@@ -406,6 +414,22 @@ export default function AddBlogIndex() {
         </Box>
 
         <CardContent sx={{ p: 4 }}>
+        {isLoading ? (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "400px",
+      }}
+    >
+      {/* <CircularProgress size={60} /> */}
+      <Typography variant="h6" sx={{ ml: 2 }}>
+        <SpinnerLoader/>
+      </Typography>
+    </Box>
+  ) : (
+
           <Box
             component="form"
             onSubmit={handleSubmit(onSubmit)}
@@ -818,7 +842,7 @@ export default function AddBlogIndex() {
                   : "Publish Blog Post"}
               </Button>
             </Box>
-          </Box>
+          </Box>)}
         </CardContent>
       </Card>
 

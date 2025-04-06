@@ -363,13 +363,12 @@ export default function BlogManagementTable({
   const router = useRouter();
   const dispatch = useDispatch();
   const { myBlogData, isLoadingBlog } = useSelector((state) => state.blog);
-  console.log(myBlogData, "myBlogData myBlogData myBlogData myBlogData ");
 
   useEffect(() => {
     dispatch(getMyBlogsAction())
       .unwrap()
       .then((data) => {
-        console.log(data, "my blogs data ");
+        // console.log(data, "my blogs data ");
       })
       .catch((error) => {
         console.log(error, "error ");
