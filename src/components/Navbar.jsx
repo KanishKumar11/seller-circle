@@ -145,7 +145,8 @@ const NavItems = [
     subItems: [
       {
         name: "Our Blog",
-        link: "/blogs",
+        // link: "/blogs",
+        link: "#",
         desc: "Latest on Advertising",
       },
       {
