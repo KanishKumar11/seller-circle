@@ -317,7 +317,7 @@ export default function AddBlogIndex() {
       formData.append("content", content);
       formData.append("slug", data.slug);
       formData.append("category", data.category);
-      formData.append("blogType", blogType.toLowerCase());
+      // formData.append("blogType", blogType.toLowerCase());
       formData.append("metaDescription", data.metaDescription || "");
       if (blogType === "Lead") {
         formData.append("position", formPosition.toLowerCase());
@@ -774,7 +774,7 @@ export default function AddBlogIndex() {
                 mb: 4,
               }}
             >
-              <FormControl fullWidth>
+              {/* <FormControl fullWidth>
                 <InputLabel id="blogType">Blog Type</InputLabel>
                 <MuiSelect
                   labelId="blogType"
@@ -785,7 +785,7 @@ export default function AddBlogIndex() {
                   <MenuItem value="Simple">Simple</MenuItem>
                   <MenuItem value="Lead">Lead</MenuItem>
                 </MuiSelect>
-              </FormControl>
+              </FormControl> */}
             </Box>
 
             {blogType === "Lead" && (
