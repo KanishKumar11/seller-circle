@@ -405,7 +405,7 @@ const BlogCard = ({ imgUrl, category, title, content, blog, blogData }) => {
   // Handle card click with loading state
   const handleCardClick = () => {
     setIsLoading(true);
-    router.push(`/blog?id=${data._id}`);
+    router.push(`/blog/${data.slug}?id=${data._id}`);
     // Simulate loading (remove in production if navigation is instant)
     setTimeout(() => setIsLoading(false), 1000);
   };

@@ -9,6 +9,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { Close } from '@mui/icons-material';
+import SpinnerLoader from '@/common/Loader';
 
 const ConfirmationModal = ({ 
   open, 
@@ -17,7 +18,8 @@ const ConfirmationModal = ({
   title = "Confirm Action", 
   message = "Are you sure you want to proceed with this action?",
   confirmButtonText = "Confirm",
-  cancelButtonText = "Cancel"
+  cancelButtonText = "Cancel",
+  isloading
 }) => {
   return (
     <Dialog 
@@ -59,11 +61,11 @@ const ConfirmationModal = ({
           {cancelButtonText}
         </Button>
         <Button 
-          onClick={onConfirm} 
+          onClick={ onConfirm} 
           variant="contained" 
           sx={{ borderRadius: "20px", backgroundColor: "error.main" }}
         >
-          {confirmButtonText}
+          {isloading?<SpinnerLoader/>:<span>{confirmButtonText}</span>}
         </Button>
       </DialogActions>
     </Dialog>

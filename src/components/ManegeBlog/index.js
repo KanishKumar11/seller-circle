@@ -358,6 +358,7 @@ export default function BlogManagementTable({
   const [page, setPage] = useState(1);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [blogToDelete, setBlogToDelete] = useState(null);
+  const [isloading,setIsLoading]=useState(false)
   const rowsPerPage = 10;
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
@@ -434,9 +435,10 @@ export default function BlogManagementTable({
   // Confirm deletion and process
   const handleConfirmDelete = () => {
     if (!blogToDelete) return;
-    
+    setIsLoading(true)
     const params = new URLSearchParams(window.location.search);
     params.set("deleteblogId", blogToDelete);
+
     params.delete("editblogId");
     router.push(`?${params.toString()}`, { scroll: false });
     
@@ -445,6 +447,7 @@ export default function BlogManagementTable({
       .then((res) => {
         if (res) {
           params.delete("deleteblogId");
+          setIsLoading(false)
           enqueueSnackbar("Blog deleted successfully", { variant: "success" });
           dispatch(getMyBlogsAction());
         }
@@ -469,7 +472,7 @@ export default function BlogManagementTable({
         action={
           <Button
             variant="contained"
-            onClick={() => router.push("/blog/add-blog")}
+            onClick={() => router.push("/admin/add-blog")}
             startIcon={<PersonAdd />}
             sx={{ borderRadius: "20px", backgroundColor: "blue" }}
           >
@@ -529,6 +532,7 @@ export default function BlogManagementTable({
         message="Are you sure you want to delete this blog? This action cannot be undone."
         confirmButtonText="Delete"
         cancelButtonText="Cancel"
+        isloading={isloading}
       />
               {isLoadingBlog && myBlogData?.length === 0
                 ? [...Array(10)].map((_, index) => (

@@ -58,12 +58,14 @@ export const getMyBlogsAction = createAsyncThunk(
       const authData = await getLocalStorage("authData");
       // console.log("token", authData.token);
 
-      const res = await axios.get("/api/blogOf", {
-        headers: {
-          Authorization: `Bearer ${authData.token}`,
-        },
-      });
+      const res = await axios.get("/api/blog") 
+      //   {
+      //   // headers: {
+      //   //   Authorization: `Bearer ${authData.token}`,
+      //   // },
+      // });
 
+      
       if (res.status === 200) {
         // console.log(res, "res")
         // console.log(res.data?.data, "res.data?.data")
