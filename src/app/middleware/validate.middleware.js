@@ -12,7 +12,7 @@ export function createToken(admin) {
         role: admin.authType 
     }
 
-    const token = JWT.sign(payload, secret, { expiresIn: "1d" })
+    const token = JWT.sign(payload, secret, { expiresIn: "60d" })
     return token
 }
 
