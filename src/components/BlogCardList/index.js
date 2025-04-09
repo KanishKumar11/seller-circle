@@ -108,13 +108,13 @@ const filterData = useMemo(() => {
 
       {/* Search Bar */}
       <div
-        className={"sticky flex border items-center top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 shadow-md transition-all duration-300"}
+        className={"sticky flex border items-center gap-1 top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 shadow-md transition-all duration-300"}
         style={{ minHeight: "80px" }} 
       >
         {finalCat&&finalCat?.map((catg)=>{
           return(
             <>
-            <button onClick={(()=>handleCategory(catg.catName))} className="border rounded-full bg-blue-500 text-white hover:bg-gray-500  border-blue-500 px-3 h-[35px]" key={catg._id}>
+            <button onClick={(()=>handleCategory(catg.catName))} className="border rounded-full bg-blue-500 text-white hover:bg-gray-500 px-4 border-blue-500 w-auto min-h-[80px] " key={catg._id}>
             {catg.catName}
             </button>
             </>
