@@ -846,7 +846,6 @@
 //   );
 // }
 
-
 "use client";
 
 import { Nunito_Sans } from "next/font/google";
@@ -898,13 +897,13 @@ export default function BlogPost() {
 
   const processContent = (htmlContent) => {
     if (!htmlContent) return "";
-    
+
     // Client-side only code - using document
-    if (typeof document !== 'undefined') {
+    if (typeof document !== "undefined") {
       // Create a div element to parse the HTML
-      const tempDiv = document.createElement('div');
+      const tempDiv = document.createElement("div");
       tempDiv.innerHTML = htmlContent;
-      
+
       // Process images
       const images = tempDiv.getElementsByTagName("img");
       for (const img of images) {
@@ -917,10 +916,10 @@ export default function BlogPost() {
         img.style.border = "1px solid #f3f4f6";
         img.style.boxShadow = "0 20px 25px -5px rgb(0 0 0 / 0.1)";
       }
-      
+
       return tempDiv.innerHTML;
     }
-    
+
     // Fallback for SSR
     return htmlContent;
   };
@@ -1071,7 +1070,7 @@ export default function BlogPost() {
                   alt={data.title}
                   width={1200}
                   height={400}
-                  className="w-full h-[200px] sm:h-[300px] md:h-[400px] object-contain rounded-xl shadow-md border border-gray-200"
+                  className="w-full h-[200px] sm:h-[300px] md:h-[400px] object-cover rounded-xl shadow-md border border-gray-200"
                 />
               </div>
 
@@ -1085,26 +1084,28 @@ export default function BlogPost() {
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
                   {data.title}
                 </h1>
-                <div className="flex items-center gap-3 border-b border-gray-100 pb-6">
-                  <img
-                    src={data?.authID?.imageBase64}
-                    alt={data?.authID?.name}
-                    width={40}
-                    height={40}
-                    className="rounded-full border-2 border-purple-100"
-                  />
+                <div className="flex items-center gap-3 border-b w-[100%] border-red-500 pb-6">
+                  <div className="w-[90px] h-[90px]">
+                    
+                    <img
+                      src={data?.authID?.imageBase64}
+                      alt={data?.authID?.name}
+                      width={40}
+                      height={40}
+                      className="rounded-full w-[100%] h-[100%] objectFit-contained border-2 border-purple-100"
+                    />
+                  </div>
                   <div className="text-gray-600">
-                    <p className="font-medium">{data?.authID?.name}</p>
+                    <p className="font-bold border-b border-black">{data?.authID?.name}</p>
                   </div>
                 </div>
               </div>
 
               {/* Apply the prose class directly to the container with content */}
-              <div 
+              <div
                 className="prose prose-headings:font-bold prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl prose-sm sm:prose-base lg:prose-lg max-w-none text-gray-700 leading-relaxed mb-10"
-                dangerouslySetInnerHTML={{ __html: processedContent }} 
+                dangerouslySetInnerHTML={{ __html: processedContent }}
               />
-
             </motion.div>
 
             {/* Sidebar (Right) */}

@@ -240,12 +240,12 @@ const LatestBlog = ({ blog }) => {
         </motion.h2>
       </div>
 
-      <div className="flex flex-col md:flex-row bg-white overflow-hidden w-full">
-        <div className="md:w-2/5 flex justify-center rounded-[20px] border border-grey-400 shadow-2xl md:h-[370px]">
+      <div className="flex flex-col md:flex-row bg-white overflow-hidden w-[100%]">
+        <div className=" flex justify-center rounded-[20px] border border-grey-400 shadow-2xl md:h-[370px]">
           <img
             src={imageUrl}
             alt={latestB?.title || "Blog cover"}
-            className="transition-transform duration-400 ease-in-out object-cover center rounded-[20px] w-full h-full"
+            className="transition-transform duration-400 ease-in-out object-cover center rounded-[20px]"
           />
         </div>
         <div className="md:w-3/5 p-4">
@@ -261,7 +261,7 @@ const LatestBlog = ({ blog }) => {
                   width: 90,
                   height: 90,
                   borderRadius: "100%",
-                  objectFit: "cover",
+                  objectFit: "cover"
                 }}
                 className="shadow-lg border"
               />
