@@ -108,3 +108,6 @@
   align-items: center;
   height: auto;
 }
+p {
+  margin: 0 !important;
+}
