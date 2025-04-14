@@ -1084,19 +1084,20 @@ export default function BlogPost() {
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
                   {data.title}
                 </h1>
-                <div className="flex items-center gap-3 border-b w-[100%] border-red-500 pb-6">
-                  <div className="w-[90px] h-[90px]">
-                    
+                <div className="flex items-center gap-3 border-b w-[100%]  pb-6">
+                  <div className="w-[60px] h-[60px]">
                     <img
                       src={data?.authID?.imageBase64}
                       alt={data?.authID?.name}
-                      width={40}
-                      height={40}
-                      className="rounded-full w-[100%] h-[100%] objectFit-contained border-2 border-purple-100"
+                      width={60}
+                      height={60}
+                      className="rounded-full w-[100%] h-[100%] aspect-square objectFit-contained border-2 border-purple-100"
                     />
                   </div>
                   <div className="text-gray-600">
-                    <p className="font-bold border-b border-black">{data?.authID?.name}</p>
+                    <p className="font-bold border-b border-black">
+                      {data?.authID?.name}
+                    </p>
                   </div>
                 </div>
               </div>

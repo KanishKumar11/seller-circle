@@ -105,16 +105,14 @@ export const GET = async () => {
   try {
     await connectDB();
 
-    const getData = await BlogModel.find().populate(
-      "authID",
-      "-token -email -password"
-    );
-    // console.log(getData, "blog resposnse");
+    const getData = await BlogModel.find()
+      .populate("authID", "-token -email -password")
+      .sort({ createdAt: -1 }); // Add sorting by creation date
+
     if (!getData || getData.length === 0) {
       return NextResponse.json({ error: "Not Found" }, { status: 404 });
     }
 
-    // Calculate the size of the `getData` object
     const getDataSize = Buffer.byteLength(JSON.stringify(getData));
     console.log(`Size of the blog data: ${getDataSize} bytes`);
 

@@ -13,7 +13,7 @@
 // import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 // import { useRouter } from "next/navigation";
 // import { motion } from "framer-motion";
-  
+
 // const LatestBlog = ({ blog }) => {
 //   const [isLoading, setIsLoading] = useState(false); // Loading state
 //   let latestB = blog[0];
@@ -70,24 +70,14 @@
 //               </motion.h2>
 //             </div>
 
-
- 
 //       <div className="flex flex-col md:flex-row bg-white overflow-hidden w-full">
 //         <div className="md:w-2/5 flex justify-center  rounded-[20px] border border-grey-400 shadow-2xl  md:h-[370px]">
 
-
-               
 //             <img
 //               src={imageUrl}
 //               alt={latestB?.title || "Blog cover"}
 //               className="transition-transform duration-400 ease-in-out object-cover center rounded-full w-full h-full"
 //             />
-          
-            
-
-
-
-
 
 //         </div>
 //         <div className="md:w-3/5 p-4">
@@ -166,8 +156,7 @@
 
 // export default LatestBlog;
 
-
-// with font 
+// with font
 "use client";
 import { Nunito_Sans } from "next/font/google";
 import React, { useState } from "react";
@@ -184,8 +173,8 @@ import { motion } from "framer-motion";
 
 // Import the Nunito font
 const nunito = Nunito_Sans({
-  weight: ['300', '400', '600', '700'],
-  subsets: ['latin'],
+  weight: ["300", "400", "600", "700"],
+  subsets: ["latin"],
 });
 
 const LatestBlog = ({ blog }) => {
@@ -216,10 +205,13 @@ const LatestBlog = ({ blog }) => {
     }, 2000); // Simulate 2-second API delay
   };
 
-  const imageUrl = latestB?.imageBase64 || "https://via.placeholder.com/395x419";
+  const imageUrl =
+    latestB?.imageBase64 || "https://via.placeholder.com/395x419";
 
   return (
-    <div className={`${nunito.className} p-4 md:px-[20px] flex flex-col items-center max-w-[1440px] mx-auto`}>
+    <div
+      className={`${nunito.className} p-4 md:px-[20px] flex flex-col items-center max-w-[1440px] mx-auto`}
+    >
       <div className="max-w-7xl mx-auto mb-16 z-[39]">
         <motion.h3
           initial={{ y: 100, opacity: 0 }}
@@ -240,8 +232,8 @@ const LatestBlog = ({ blog }) => {
         </motion.h2>
       </div>
 
-      <div className="flex flex-col md:flex-row bg-white overflow-hidden w-[100%]">
-        <div className=" flex justify-center rounded-[20px] border border-grey-400 shadow-2xl md:h-[370px]">
+      <div className="flex flex-col md:flex-row bg-white items-center overflow-hidden w-[100%]">
+        <div className=" flex justify-center rounded-[20px] pl-4 shadow-sm md:h-[370px]">
           <img
             src={imageUrl}
             alt={latestB?.title || "Blog cover"}
@@ -249,7 +241,7 @@ const LatestBlog = ({ blog }) => {
           />
         </div>
         <div className="md:w-3/5 p-4">
-          <Box className="text-[14px] text-blue-500 w-[100px] h-[35px] mb-3 rounded-lg flex justify-center items-center bg-[#E4F0FF]">
+          <Box className="text-[14px] m-4 text-blue-500 w-[100px] h-[35px] mb-3 rounded-lg flex justify-center items-center bg-[#E4F0FF]">
             {latestB?.category}
           </Box>
           <div className="m-4">
@@ -258,15 +250,15 @@ const LatestBlog = ({ blog }) => {
                 alt={""}
                 src={latestB?.authID?.imageBase64}
                 style={{
-                  width: 90,
-                  height: 90,
+                  width: 60,
+                  height: 60,
                   borderRadius: "100%",
-                  objectFit: "cover"
+                  objectFit: "cover",
                 }}
                 className="shadow-lg border"
               />
               <div>
-                <Typography variant="h5" className="font-[600]" component="div">
+                <Typography variant="h5" className="font-[700]" component="div">
                   {latestB?.authID ? latestB?.authID.name : latestB?.name}
                 </Typography>
                 <Typography
@@ -289,10 +281,11 @@ const LatestBlog = ({ blog }) => {
               }}
               dangerouslySetInnerHTML={{
                 __html: truncateText(
-                  latestB?.content ||
+                  latestB?.metaDescription + "..." ||
+                    latestB?.content ||
                     blog ||
                     "Click on the Read Post to open this post  [...]",
-                  100
+                  300
                 ),
               }}
             />
