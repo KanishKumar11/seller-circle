@@ -34,12 +34,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="max-w-[100vw] overflow-x-hidden">
-      <body className={nunito.className}>
-      <ReduxProvider>
-        <GoogleAnalytics gaId="G-1ZL0JJHHX9" />
-        <SnackbarProvider>
-        {children} <Toaster position={"top-center"} />
-        </SnackbarProvider>
+      <body>
+        <ReduxProvider>
+          <GoogleAnalytics gaId="G-1ZL0JJHHX9" />
+          <SnackbarProvider>
+            <main className={nunito.className}>{children} </main>
+            <Toaster position={"top-center"} />
+          </SnackbarProvider>
         </ReduxProvider>
       </body>
     </html>
