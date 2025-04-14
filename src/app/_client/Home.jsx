@@ -107,7 +107,7 @@ const Home = () => {
         <HorizontalTestimonials />
 
         <LazyLoadComponent component={Creative} />
-        {/*    <LazyLoadComponent component={Blogs} />*/}
+        <LazyLoadComponent component={Blogs} />
         <Footer />
       </div>
     </>
