@@ -4,7 +4,6 @@ import LeadGenerationBlog from "./leadGenerationBlog"
 
 export default function Page() {
   const handleSubmit = (data) => {
-    console.log("Form submitted:", data);
   };
 
   return (

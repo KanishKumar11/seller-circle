@@ -957,7 +957,6 @@ export default function BlogPost() {
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      console.log("Form submitted:", localFormData);
       setLocalFormData(formInitialState);
     };
 

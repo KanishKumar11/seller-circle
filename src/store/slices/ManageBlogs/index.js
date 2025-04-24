@@ -54,14 +54,13 @@ export const editbook = createAsyncThunk(
   "book/editbook",
   async ({ id, data }, thunkApi) => {
     try {
-      console.log(id, data, "######data for update in slice");
+  
       const res = await api.put(`/books/${id}`, data);
-      console.log(res);
+  
       if (res.status === 200) {
         return res.data;
       }
     } catch (error) {
-      console.log(error, "error in catch of edit slice 63");
       throw thunkApi.rejectWithValue(error?.message);
     }
   }
@@ -82,12 +81,10 @@ const bookSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchbooks.fulfilled, (state, action) => {
-        console.log(action.payload);
         (state.bookData = action.payload), (state.isLoading = false);
       })
       .addCase(fetchbooks.rejected, (state, action) => {
         state.isLoading = false;
-        console.log(action.payload, "sdfsfsa");
         state.error = action.payload;
       })
       .addCase(deletebooks.pending, (state) => {

@@ -43,7 +43,6 @@ const CategoryForm = () => {
     const loadCategories = async () => {
       try {
         const result = await dispatch(fetchCategoriesAction()).unwrap();
-        console.log("Categories loaded from API:", result);
       } catch (err) {
         console.error("Failed to load categories:", err);
       }
@@ -56,7 +55,6 @@ const CategoryForm = () => {
       const result = await dispatch(
         createCategoryAction(data.categoryName)
       ).unwrap();
-      console.log("Category created:", result);
       await dispatch(fetchCategoriesAction());
       reset();
     } catch (err) {
@@ -67,7 +65,6 @@ const CategoryForm = () => {
   const handleDeleteCategory = async () => {
     if (selectedCategoryId) {
       try {
-        console.log("Deleting category with ID:", selectedCategoryId);
         await dispatch(deleteCategoryAction(selectedCategoryId)).unwrap();
         await dispatch(fetchCategoriesAction());
         reset({ selectedCategoryId: "" });
@@ -78,12 +75,10 @@ const CategoryForm = () => {
         console.error("Failed to delete category:", err);
       }
     } else {
-      console.log("No category selected for deletion");
     }
   };
 
-  console.log("Redux categories state:", categories);
-  console.log("Currently selected ID:", selectedCategoryId);
+ 
 
   return (
     <Container maxWidth="sm">

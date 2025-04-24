@@ -46,17 +46,17 @@ export const UpdateEditorAction = createAsyncThunk(
   async ({ editId, formData }, { rejectWithValue }) => {
     try {
       const authData = await getLocalStorage("authData");
-      console.log(editId, ...formData);
+   
 
       const response = await axios.put(`/api/updateAuth/${editId}`, formData, {
         headers: {
           Authorization: `Bearer ${authData.token}`, // Replace yourToken with the actual token
         },
       });
-      console.log(response, "add the data ");
+  
       return response.data;
     } catch (error) {
-      console.log(error);
+   
       return rejectWithValue(error.response?.data || "Update failed");
     }
   }

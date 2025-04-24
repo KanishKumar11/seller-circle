@@ -29,7 +29,6 @@ export const UpdateAdminAction = createAsyncThunk(
   async ({ editAdminId, formData }, { rejectWithValue }) => {
     try {
       const authData = await getLocalStorage("authData");
-      console.log(editAdminId, ...formData);
 
       const response = await axios.put(
         `/api/updateAuth/${editAdminId}`,
@@ -40,10 +39,8 @@ export const UpdateAdminAction = createAsyncThunk(
           },
         }
       );
-      console.log(response, "add the data ");
       return response.data;
     } catch (error) {
-      console.log(error);
       return rejectWithValue(error.response?.data || "Update failed");
     }
   }

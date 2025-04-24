@@ -372,7 +372,6 @@ export default function BlogManagementTable({
         // console.log(data, "my blogs data ");
       })
       .catch((error) => {
-        console.log(error, "error ");
       });
   }, [dispatch]);
 
@@ -453,7 +452,6 @@ export default function BlogManagementTable({
         }
       })
       .catch((error) => {
-        console.log("couldn't delete blog", error);
         enqueueSnackbar(error, { variant: "error" });
       })
       .finally(() => {

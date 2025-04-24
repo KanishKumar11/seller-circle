@@ -387,7 +387,6 @@ const ImageOverlay = styled(Box)({
 });
 
 const BlogCard = ({ imgUrl, category, title, content, blog, blogData }) => {
-  console.log(blogData);
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const truncateText = (text, maxLength) => {
     if (!text) return "";
@@ -410,7 +409,6 @@ const BlogCard = ({ imgUrl, category, title, content, blog, blogData }) => {
     setTimeout(() => setIsLoading(false), 1000);
   };
 
-  console.log(blogData);
   // Framer Motion variants
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },

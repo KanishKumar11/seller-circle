@@ -124,7 +124,6 @@ export async function GET(req, { params }) {
 
 export async function DELETE(req, { params }) {
   await connectDB();
-  console.log(params?.id);
   const { id } = await params; // Extract ID from route params
   try {
     const authData = await authModels.findById(id);

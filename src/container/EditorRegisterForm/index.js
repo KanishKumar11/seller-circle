@@ -390,7 +390,6 @@ export default function AddUserForm({ onSubmit }) {
         }
       }
       enqueueSnackbar(errorMessage, { variant: "error" });
-      console.log(error, "error");
     }
   };
 

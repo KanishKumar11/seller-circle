@@ -536,7 +536,6 @@ export default function AdminRegisterForm() {
         }
       }
       enqueueSnackbar(errorMessage, { variant: "error" });
-      console.log(error, "error");
     }
   };
 

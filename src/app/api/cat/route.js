@@ -10,7 +10,6 @@ export const POST = async (req) => {
        const authHeader = req.headers.get("authorization");
           const token = authHeader?.split(" ")[1];
           // console.log('Authorization Header:', authHeader); // Debugging
-          console.log("Token:", token); // Debugging
       
           if (!token) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -53,7 +52,6 @@ export const GET = async () => {
     await connectDB();
 
     const getData = await CategoryTable.find()
-    console.log(getData, " resposnse");
 
     if (!getData) {
       return NextResponse.json({ error: "Not Found" }, { status: 404 });

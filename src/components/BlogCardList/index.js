@@ -19,7 +19,7 @@ const BlogCardList = ({ posts = dummyPosts }) => {
   const { blogsData, isLoading, latestBlogData, isLoadinglatestBlog } =
     useSelector((state) => state.blog);
   const { categories } = useSelector((state) => state.blog);
-  console.log(categories, "ctegoryssss");
+
   useEffect(() => {
     if (!blogsData || blogsData.length === 0) {
       dispatch(getAllBlogsAction());
@@ -66,9 +66,7 @@ const BlogCardList = ({ posts = dummyPosts }) => {
     // First, filter by category if there's a selected category
     let filteredData = blogsData;
     if (selectCategory) {
-      console.log(selectCategory, "thisis my selected category");
       filteredData = blogsData.filter((blog) => {
-        console.log(blog, "fillter datataatatata");
         return blog.category === selectCategory;
       });
     }

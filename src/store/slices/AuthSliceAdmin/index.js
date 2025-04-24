@@ -7,7 +7,7 @@ export const AdminLoginAction = createAsyncThunk(
   async (payload, thunkApi) => {
     try {
       const res = await axios.post("/api/login", payload);
-      console.log(res, "respos in ");
+    
       if (res.status) {
         return res.data;
       }
@@ -31,7 +31,7 @@ export const AdminRegisterAction = createAsyncThunk(
         return res.data;
       }
     } catch (error) {
-      console.log(error?.response?.data?.error, "error in think res");
+   
       return thunkApi.rejectWithValue(error?.response?.data?.error);
     }
   }

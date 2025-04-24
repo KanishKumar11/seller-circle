@@ -142,7 +142,7 @@ const Blogs = () => {
         
       </div>
         <div className="flex items-center justify-center mt-16">
-      <Link href="/allblogs">
+      <Link href="/blogs">
           <Button variant="cta">VIEW ALL BLOGS</Button>
         </Link>
         </div>

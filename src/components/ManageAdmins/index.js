@@ -53,10 +53,10 @@ export default function AdminTable({ onEdit, onRemove, loading = false }) {
     dispatch(getAllAdminAction())
       .unwrap()
       .then((data) => {
-        console.log(data, "total admin adata");
+     
       })
       .catch((error) => {
-        console.log(error, "error ");
+      
       });
   }, []);
   const filteredAdmins = [...(TotalAdminData || [])] // Create a shallow copy to avoid mutation
@@ -91,7 +91,7 @@ export default function AdminTable({ onEdit, onRemove, loading = false }) {
     dispatch(getDeleteAdminAction(adminId))
       .unwrap()
       .then((res) => {
-        console.log(res, "response of delete admin");
+       
         enqueueSnackbar("Admin delete sucessfuly", { variant: "success" });
         params.delete("deleteAdminId");
         // dispatch(getAllAdminAction());

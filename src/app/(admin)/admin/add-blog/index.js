@@ -139,7 +139,6 @@ export default function AddBlogIndex() {
     const loadCategories = async () => {
       try {
         const result = await dispatch(fetchCategoriesAction()).unwrap();
-        console.log("blogg  Categories loaded from API:", result);
       } catch (err) {
         console.error("Failed to load categories:", err);
       }
@@ -194,7 +193,6 @@ export default function AddBlogIndex() {
         .unwrap()
         .then((data) => {
           const editorData = data.find((blog) => blog._id === editId);
-          console.log(editorData);
           if (editorData) {
             setValue("title", editorData.title);
             setValue("slug", editorData.slug);
@@ -326,11 +324,9 @@ export default function AddBlogIndex() {
         formData.append("file", fileInputRef.current.files[0]);
       }
       if (formData && !editId) {
-        console.log(...formData);
         dispatch(addblog(formData))
           .unwrap()
           .then((data) => {
-            console.log(data);
             setValue("title", "");
             setValue("slug", "");
             setValue("category", "");
@@ -343,7 +339,6 @@ export default function AddBlogIndex() {
             router.push("/admin/all-blog");
           })
           .catch((error) => {
-            console.log(error);
             enqueueSnackbar("Failed to create blog post", { variant: "error" });
           });
       } else if (formData && editId) {

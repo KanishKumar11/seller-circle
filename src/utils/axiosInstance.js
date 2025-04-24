@@ -14,7 +14,6 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = `Bearer ${authData.token}`; // Add the Bearer token to the Authorization header
     }
-    console.log(config);
     return config;
   },
   (error) => {

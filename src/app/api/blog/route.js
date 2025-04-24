@@ -114,7 +114,6 @@ export const GET = async () => {
     }
 
     const getDataSize = Buffer.byteLength(JSON.stringify(getData));
-    console.log(`Size of the blog data: ${getDataSize} bytes`);
 
     return NextResponse.json({ success: true, data: getData }, { status: 200 });
   } catch (error) {

@@ -29,7 +29,6 @@ const FormAddBook = ({ setToggle, update, setUpdateValue }) => {
       image: "",
     },
   });
-  console.log(update, "update");
   const dispatch = useDispatch();
   const naviagte = useNavigate();
   // handel register function
@@ -80,7 +79,6 @@ const FormAddBook = ({ setToggle, update, setUpdateValue }) => {
       })
       .catch((error) => {
         toast.error(error);
-        console.log(error, "error data in catch in edit book 67");
       });
   };
 
@@ -110,7 +108,6 @@ const FormAddBook = ({ setToggle, update, setUpdateValue }) => {
     }
   };
 
-  console.log(errors);
   return (
     <Box
       sx={{

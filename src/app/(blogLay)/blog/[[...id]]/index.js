@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const BlogPage = () => {
   const id = searchParams.get("id"); // ✅ Get 'id' from query params
   const [blogId, setBlogId] = useState(null);
-  console.log(id, "id in index");
+
   useEffect(() => {
     if (id) {
       setBlogId(id);

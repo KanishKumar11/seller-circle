@@ -3,7 +3,6 @@ import JWT from 'jsonwebtoken'
 const secret = process.env.SECRET
 
 export function createToken(admin) {
-    console.log(admin,"token")
     const payload = {
         id: admin._id,
         name: admin.name,
