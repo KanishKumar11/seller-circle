@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node init && next dev",
-    "build": "node init && next build",
-    "start": "node init && next start",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -58,8 +58,6 @@
     "react-slick": "^0.30.2",
     "sharp": "^0.33.4",
     "slick-carousel": "^1.8.1",
-    "socket.io": "4.8.1",
-    "socket.io-client": "4.8.1",
     "sonner": "^1.5.0",
     "swiper": "^11.1.14",
     "tailwind-merge": "^2.3.0",

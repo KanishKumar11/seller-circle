@@ -146,7 +146,7 @@ const Items2 = [
               <FaDollarSign className="block aspect-square w-5 h-5" />
             </div>
             <b>Price:</b>
-            <span className="font-bold text-2xl">$100 per video</span>
+            <span className="font-bold text-2xl">Contact for pricing</span>
           </li> */}
           <li className="flex gap-3">
             <div>
@@ -221,7 +221,7 @@ const Items3 = [
               <FaDollarSign className="block aspect-square w-5 h-5" />
             </div>
             <b>Price:</b>
-            <span className="font-bold text-2xl">$60 per package</span>
+            <span className="font-bold text-2xl">Contact for pricing</span>
           </li>
           <li className="flex gap-3">
             <div>
@@ -290,7 +290,7 @@ const additionalFaq = [
   {
     question: "Can I choose between a brand video and an ad video?",
     answer:
-      "Yes, you can select either a brand video or an ad video based on your needs. Both are priced at $100 per video with the same set of inclusions.",
+      "Yes, you can select either a brand video or an ad video based on your needs. Both have the same set of inclusions.",
   },
   {
     question: "Are the videos optimized for multiple platforms?",
@@ -381,12 +381,7 @@ const Videos = ({ IN }) => {
             {" "}
             <div className="w-full flex flex-col gap-5">
               <div className="bg-background p-5 rounded-xl text-white text-xl font-bold ">
-                Package Starts from{" "}
-                <span className="font-bold text-4xl">
-                  {IN ? " ₹5000" : " $100"}
-                </span>
-                per video
-              </div>{" "}
+                Contact for pricing</div>{" "}
               <Pricing
                 businessName
                 ASIN={false}
@@ -407,9 +402,7 @@ const Videos = ({ IN }) => {
         </div>
       </div>
       {/* <div className="text-background text-xl font-bold ml-10">
-        Package Starts from{" "}
-        <span className="font-bold text-4xl">{IN ? " ₹ 3000 " : " $150"}</span>
-      </div> */}
+        Contact for pricing</div> */}
       <div className="">
         <Works />
         <div className="text-3xl text-center text-background font-bold">

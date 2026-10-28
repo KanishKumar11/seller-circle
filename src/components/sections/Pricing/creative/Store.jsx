@@ -154,7 +154,7 @@ const additionalFaq = [
   {
     question: "What is the cost of the Brand Store Design package?",
     answer:
-      "The package is priced at $400 per project ( 5 Pages ) If more Sub pages Custom quotation will be shared , including all the mentioned benefits and inclusions.",
+      "Contact us for pricing ( 5 Pages ). If more Sub pages, a custom quotation will be shared, including all the mentioned benefits and inclusions.",
   },
 ];
 
@@ -232,11 +232,7 @@ const Store = ({ IN }) => {
             BRAND STORE
           </div>
           <div className="text-white bg-background p-5 rounded-xl text-xl font-bold ">
-            Package Starts from{" "}
-            <span className="font-bold text-4xl">
-              {IN ? " ₹ 20000" : " $400"}
-            </span>
-          </div>
+            Contact for pricing</div>
           <div className="absolute -top-20" id="quote"></div>{" "}
           <div className="sticky top-24  bg-background/30 rounded-md flex flex-col gap-14 items-center w-full justify-center ">
             {" "}

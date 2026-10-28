@@ -176,13 +176,7 @@ const DSP = ({ IN }) => {
                 {" "}
                 <FaDollarSign className="block aspect-square w-5 h-5" />
               </div>
-              <b>starting From:</b>
-              <span className="font-bold text-2xl text-background">
-                {IN ? "₹25,000 " : "$500 "}{" "}
-              </span>
-              per month +{" "}
-              <span className="text-background font-bold text-2xl">2%</span>of
-              sales
+              <b>Contact for pricing</b>
             </li>
             <li className="flex gap-3">
               <div>

@@ -96,7 +96,7 @@ const Items2 = [
               <FaDollarSign className="block aspect-square w-5 h-5" />
             </div>
             <b>Price:</b>
-            <span className="font-bold text-2xl">$50 per package</span>
+            <span className="font-bold text-2xl">Contact for pricing</span>
           </li> */}
           <li className="flex gap-3">
             <div>
@@ -164,7 +164,7 @@ const Items3 = [
               <FaDollarSign className="block aspect-square w-5 h-5" />
             </div>
             <b>Price:</b>
-            <span className="font-bold text-2xl">$60 per package</span>
+            <span className="font-bold text-2xl">Contact for pricing</span>
           </li> */}
           <li className="flex gap-3">
             <div>
@@ -298,19 +298,9 @@ const Listing = ({ IN }) => {
           </div>
           <div className="flex gap-5">
             <div className="bg-background flex-1 p-5 px-4 rounded-xl text-white text-lg font-bold ">
-              5-Image Package Starts from <br />
-              <span className="font-bold text-4xl">
-                {IN ? " ₹1500" : " $50"}
-              </span>
-              per package
-            </div>{" "}
+              5-Image Package: Contact for pricing</div>{" "}
             <div className="bg-background flex-1 p-5 px-4 rounded-xl text-white text-lg font-bold ">
-              7-Image Package Starts from <br />
-              <span className="font-bold text-4xl">
-                {IN ? " ₹2000" : " $60"}
-              </span>
-              per package
-            </div>
+              7-Image Package: Contact for pricing</div>
           </div>
           <div className="absolute -top-20" id="quote"></div>{" "}
           <div className="sticky top-24  bg-background/30 rounded-md flex flex-col gap-14 items-center w-full justify-center ">
@@ -384,9 +374,7 @@ const Listing = ({ IN }) => {
         </div>
       </div>
       {/* <div className="text-background text-xl font-bold ml-10">
-        Package Starts from{" "}
-        <span className="font-bold text-4xl">{IN ? " ₹ 3000 " : " $150"}</span>
-      </div> */}
+        Contact for pricing</div> */}
       <div className="">
         <Works />
         <div className="text-3xl text-center text-background font-bold">

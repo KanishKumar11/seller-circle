@@ -187,13 +187,7 @@ const Advertising = ({ IN }) => {
                 {" "}
                 <FaDollarSign className="block aspect-square w-5 h-5" />
               </div>
-              <b>starting From:</b>
-              <span className="font-bold text-2xl text-background">
-                {IN ? "₹25,000 " : "$500 "}{" "}
-              </span>
-              per month +{" "}
-              <span className="text-background font-bold text-2xl">2%</span>of
-              sales
+              <b>Contact for pricing</b>
             </li>
             <li className="flex gap-3">
               <div>
@@ -306,12 +300,7 @@ const Advertising = ({ IN }) => {
           <div className="sticky top-24  bg-background/30 rounded-md flex flex-col gap-14  w-full justify-center ">
             {" "}
             <div className="bg-background text-white text-xl font-bold p-5 rounded-xl">
-              Package Starts from{" "}
-              <span className="font-bold text-4xl">
-                {IN ? " ₹25,000 " : " $500"}
-              </span>
-              +6% of AD spends
-            </div>
+              Contact for pricing</div>
             <div className="w-full" id="form">
               {" "}
               <Pricing

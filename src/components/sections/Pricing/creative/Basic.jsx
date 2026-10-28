@@ -181,7 +181,7 @@ const additionalFaq = [
   },
   {
     question: "Is there any additional cost for using certain modules?",
-    answer: "No, the $50 per ASIN includes all standard modules listed.",
+    answer: "No, the package pricing includes all standard modules listed.",
   },
   {
     question: "What does '2 Iterations' mean?",
@@ -270,11 +270,7 @@ const Basic = ({ IN }) => {
                 BASIC A+ CONTENT
               </div>
               <div className="bg-background p-5 rounded-xl text-white text-xl font-bold ">
-                Package Starts from{" "}
-                <span className="font-bold text-4xl">
-                  {IN ? " ₹ 1200" : " $75"}
-                </span>
-              </div>{" "}
+                Contact for pricing</div>{" "}
               <Pricing services={["Basic A+ Content"]} formType="basicA+" />
             </div>{" "}
           </div>

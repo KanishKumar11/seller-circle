@@ -284,11 +284,7 @@ const Premium = ({ IN }) => {
             PREMIUM A+ CONTENT
           </div>
           <div className="bg-background text-white text-xl font-bold p-5 rounded-xl">
-            Package Starts from{" "}
-            <span className="font-bold text-4xl">
-              {IN ? " ₹ 3000 " : " $150"}
-            </span>
-          </div>
+            Contact for pricing</div>
           <div className="absolute -top-20" id="quote"></div>{" "}
           <div className="sticky top-24  bg-background/30 rounded-md flex flex-col gap-14 items-center w-full justify-center ">
             {" "}

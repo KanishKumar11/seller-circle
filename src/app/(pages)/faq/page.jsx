@@ -36,7 +36,7 @@ const generalFaq = [
       },
       {
         b: "Amazon DSP Management",
-        desc: "Utilizing a self-serve seat, we build audience-based campaigns tailored to your product needs. Campaigns start as low as $1000, with custom audience creations and creative services billed separately from the service fees.",
+        desc: "Utilizing a self-serve seat, we build audience-based campaigns tailored to your product needs. Contact us for pricing, with custom audience creations and creative services billed separately from the service fees.",
       },
       {
         b: "Strategy Consulting",
@@ -180,7 +180,7 @@ const dspFaq = [
     ul: [
       "Utilizing a self-serve seat",
       "Building audiences based on product needs",
-      "Starting campaigns as low as $1000",
+      "Contact us for pricing",
       "Custom audience creations",
       "Creative services for DSP advertising, billed separately from service fees",
     ],

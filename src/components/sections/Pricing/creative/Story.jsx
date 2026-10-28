@@ -91,7 +91,7 @@ const Items = [
 ];
 const Items2 = [
   {
-    hl1: "Premium A+ Content Package ($100 per ASIN)",
+    hl1: "Premium A+ Content Package",
     l1: (
       <>
         <ul className="flex flex-col gap-4 my-3">
@@ -203,7 +203,7 @@ const additionalFaq = [
   {
     question: "What is the cost of the Brand Story Creation package?",
     answer:
-      "The package is priced at $300 per project, including all the mentioned benefits and inclusions.",
+      "Contact us for pricing. The package includes all the mentioned benefits and inclusions.",
   },
 
   {
@@ -261,11 +261,7 @@ const Story = ({ IN }) => {
             BRAND STORY
           </div>
           <div className="bg-background text-xl font-bold text-white p-5 rounded-xl">
-            Package Starts from{" "}
-            <span className="font-bold text-4xl">
-              {IN ? " ₹ 3000 " : " $150"}
-            </span>
-          </div>
+            Contact for pricing</div>
           <div className="absolute -top-20" id="quote"></div>{" "}
           <div className="sticky top-24  bg-background/30 rounded-md flex flex-col gap-14 items-center w-full justify-center ">
             {" "}
