@@ -1,0 +1,18 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "blog",
+    "fix/deps-sync",
+    "main"
+  ],
+  "parent": {
+    "blog": "main",
+    "fix/deps-sync": "main",
+    "main": null
+  },
+  "order": [
+    "main",
+    "blog",
+    "fix/deps-sync"
+  ]
+}
