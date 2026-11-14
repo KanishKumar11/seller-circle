@@ -158,6 +158,11 @@ const NavItems = [
         link: "/newsletter",
         desc: "Join our Tribe",
       },
+      {
+        name: "SellerCircle.io",
+        link: "/sellercircle-io",
+        desc: "Data-driven seller growth",
+      },
     ],
   },
 
